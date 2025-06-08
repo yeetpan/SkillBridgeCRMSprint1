@@ -1,0 +1,201 @@
+-- -----------------------------------------------
+-- 1. Table: Interests
+-- Stores all possible fields of expertise or interest
+-- -----------------------------------------------
+CREATE TABLE Interests (
+    interest_id INT AUTO_INCREMENT PRIMARY KEY,
+    interest_name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Sample interests
+INSERT INTO Interests (interest_name) VALUES
+('AI/ML'),
+('Web Development'),
+('Cybersecurity'),
+('Data Science');
+
+-- -----------------------------------------------
+-- 2. Table: Student
+-- Stores basic student information
+-- -----------------------------------------------
+CREATE TABLE Student (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    college VARCHAR(100)
+);
+
+-- Sample students
+INSERT INTO Student (name, email, college) VALUES
+('Aarav Mehta', 'aarav@student.com', 'IIT Delhi'),
+('Sanya Verma', 'sanya@student.com', 'BITS Pilani');
+
+-- -----------------------------------------------
+-- 3. Table: Student_Interests
+-- Many-to-many mapping between students and interests
+-- -----------------------------------------------
+CREATE TABLE Student_Interests (
+    student_id INT,
+    interest_id INT,
+    PRIMARY KEY (student_id, interest_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (interest_id) REFERENCES Interests(interest_id)
+);
+
+-- Map students to interests
+INSERT INTO Student_Interests VALUES
+(1, 1),  -- Aarav -> AI/ML
+(1, 4),  -- Aarav -> Data Science
+(2, 2);  -- Sanya -> Web Dev
+
+-- -----------------------------------------------
+-- 4. Table: Mentor
+-- Stores mentor info including their expertise
+-- -----------------------------------------------
+CREATE TABLE Mentor (
+    mentor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    expertise_id INT NOT NULL,
+    FOREIGN KEY (expertise_id) REFERENCES Interests(interest_id)
+);
+
+-- Sample mentors
+INSERT INTO Mentor (name, email, expertise_id) VALUES
+('Dr. Rakesh Kumar', 'rakesh@mentors.org', 1), -- AI/ML
+('Megha Rao', 'megha@mentors.org', 2);         -- Web Dev
+
+-- -----------------------------------------------
+-- 5. Table: Student_Mentor
+-- Stores student-mentor matchmaking with score
+-- -----------------------------------------------
+CREATE TABLE Student_Mentor (
+    match_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    mentor_id INT NOT NULL,
+    match_date DATE NOT NULL,
+    match_score FLOAT,
+    UNIQUE (student_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id)
+);
+
+-- Sample match
+INSERT INTO Student_Mentor (student_id, mentor_id, match_date, match_score) VALUES
+(1, 1, '2025-06-01', 0.85); -- Aarav + Rakesh
+
+-- -----------------------------------------------
+-- 6. Table: Mentor_Availability
+-- Stores available weekly time slots for mentors
+-- -----------------------------------------------
+CREATE TABLE Mentor_Availability (
+    mentor_id INT,
+    day_of_week INT,              -- 0=Sunday to 6=Saturday
+    start_time TIME,
+    end_time TIME,
+    PRIMARY KEY (mentor_id, day_of_week, start_time),
+    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
+    CONSTRAINT check_time_range CHECK (end_time > start_time),
+    CONSTRAINT check_day_of_week CHECK (day_of_week BETWEEN 0 AND 6)
+);
+
+-- Sample availability
+INSERT INTO Mentor_Availability VALUES
+(1, 1, '10:00:00', '12:00:00'), -- Monday
+(2, 3, '14:00:00', '16:00:00'); -- Wednesday
+
+-- -----------------------------------------------
+-- 7. Table: Internship
+-- Stores internship listings linked to a mentor
+-- -----------------------------------------------
+CREATE TABLE Internship (
+    internship_id INT AUTO_INCREMENT PRIMARY KEY,
+    org_name TEXT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    capacity INT NOT NULL,
+    description TEXT,
+    deadline DATE,
+    mentor_id INT,
+    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id)
+);
+
+-- Sample internships
+INSERT INTO Internship (org_name, title, capacity, description, deadline, mentor_id) VALUES
+('Google', 'AI Intern', 3, 'Work with AI/ML team', '2025-07-15', 1),
+('Microsoft', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10', 2);
+
+-- -----------------------------------------------
+-- 8. Table: Student_Internship_Application
+-- Tracks internship applications by students
+-- -----------------------------------------------
+CREATE TABLE Student_Internship_Application (
+    application_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    internship_id INT NOT NULL,
+    status ENUM('Applied', 'Accepted', 'Rejected') NOT NULL,
+    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (internship_id) REFERENCES Internship(internship_id)
+);
+
+-- Sample applications
+INSERT INTO Student_Internship_Application (student_id, internship_id, status) VALUES
+(1, 1, 'Applied'),
+(2, 2, 'Applied');
+
+-- -----------------------------------------------
+-- 9. Table: Mentor_Session_Slot
+-- Defines available session slots offered by mentors
+-- -----------------------------------------------
+CREATE TABLE Mentor_Session_Slot (
+    slot_id INT AUTO_INCREMENT PRIMARY KEY,
+    mentor_id INT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    duration INT NOT NULL,  -- in minutes
+    status ENUM('Available', 'Booked', 'Completed', 'Cancelled') NOT NULL,
+    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id)
+);
+
+-- Sample slots
+INSERT INTO Mentor_Session_Slot (mentor_id, date, time, duration, status) VALUES
+(1, '2025-06-10', '10:00:00', 60, 'Available'),
+(2, '2025-06-12', '15:00:00', 45, 'Available');
+
+-- -----------------------------------------------
+-- 10. Table: Session_Booking
+-- Links a student to a booked session slot
+-- -----------------------------------------------
+CREATE TABLE Session_Booking (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    slot_id INT NOT NULL,
+    student_id INT NOT NULL,
+    booking_status ENUM('Scheduled', 'Completed', 'Cancelled') NOT NULL,
+    FOREIGN KEY (slot_id) REFERENCES Mentor_Session_Slot(slot_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id)
+);
+
+-- Sample booking
+INSERT INTO Session_Booking (slot_id, student_id, booking_status) VALUES
+(1, 1, 'Scheduled');
+
+-- -----------------------------------------------
+-- 11. Table: Feedback
+-- Stores student feedback after a session
+-- -----------------------------------------------
+CREATE TABLE Feedback (
+    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    student_id INT,
+    mentor_id INT,
+    rating INT NOT NULL,
+    comments TEXT,
+    FOREIGN KEY (booking_id) REFERENCES Session_Booking(booking_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
+    CONSTRAINT check_rating CHECK (rating BETWEEN 1 AND 5)
+);
+
+-- Sample feedback
+INSERT INTO Feedback (booking_id, student_id, mentor_id, rating, comments) VALUES
+(1, 1, 1, 5, 'Great session on ML basics!');
