@@ -180,12 +180,13 @@ CREATE TABLE Feedback (
     feedback_id INT AUTO_INCREMENT PRIMARY KEY,
     booking_id INT NOT NULL,
     student_id INT,
-    mentor_id INT,
+    -- mentor_id INT,
     rating INT NOT NULL,
     comments TEXT,
     FOREIGN KEY (booking_id) REFERENCES Session(booking_id),
     FOREIGN KEY (student_id) REFERENCES Student(student_id),
-    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
+
+    -- FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
     CONSTRAINT check_rating CHECK (rating BETWEEN 1 AND 5)
 );
 

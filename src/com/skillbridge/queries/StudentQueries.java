@@ -1,4 +1,4 @@
-package com.skrillbridge.queries;
+package com.skillbridge.queries;
 
 public class StudentQueries {
     //string queries to not fill app code.

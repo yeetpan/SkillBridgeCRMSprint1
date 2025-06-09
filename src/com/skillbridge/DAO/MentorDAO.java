@@ -1,4 +1,4 @@
-package com.skrillbridge.DAO;
+package com.skillbridge.DAO;
 
 public class MentorDAO {
     // add mentor DB ops.

@@ -1,4 +1,4 @@
-package com.skrillbridge.util;
+package com.skillbridge.util;
 import java.util.regex.Pattern;
 
 public class EmailValidate {

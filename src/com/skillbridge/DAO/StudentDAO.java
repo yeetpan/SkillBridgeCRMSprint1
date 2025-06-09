@@ -1,7 +1,7 @@
-package com.skrillbridge.DAO;
-import com.skrillbridge.entities.Student;
-import com.skrillbridge.queries.StudentQueries;
-import com.skrillbridge.util.DB;
+package com.skillbridge.DAO;
+import com.skillbridge.entities.Student;
+import com.skillbridge.queries.StudentQueries;
+import com.skillbridge.util.DB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

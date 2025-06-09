@@ -1,4 +1,4 @@
-    package com.skrillbridge.entities;
+    package com.skillbridge.entities;
 
     public class Student {
         // add variables and standard getters,setters.
