@@ -8,12 +8,13 @@ public class DB {
     private static final String username="root";
     private static final String password="password";
     static Connection connection=null;
-public static void connect(){
+public static Connection connect(){
     try{
          connection=DriverManager.getConnection(url,username,password);
 
     }catch (SQLException e){
         System.out.println(e.getMessage());
     }
+    return connection;
 }
 }

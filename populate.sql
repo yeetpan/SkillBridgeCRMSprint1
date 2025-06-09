@@ -110,14 +110,12 @@ CREATE TABLE Internship (
     capacity INT NOT NULL,
     description TEXT,
     deadline DATE,
-    mentor_id INT NOT NULL,
-    FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id)
 );
 
 -- Sample internships
-INSERT INTO Internship (org_name, title, capacity, description, deadline, mentor_id) VALUES
-('Sarvam.AI', 'AI Intern', 3, 'Work with AI/ML team', '2025-07-15', 1),
-('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10', 2);
+INSERT INTO Internship (org_name, title, capacity, description, deadline) VALUES
+('Sarvam.AI', 'AI Intern', 3, 'Work with AI/ML team', '2025-07-15'),
+('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10');
 
 -- -----------------------------------------------
 -- 7. Table: Student_Internship_Application
