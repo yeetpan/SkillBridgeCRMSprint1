@@ -77,8 +77,8 @@ CREATE TABLE Mentor (
 
 -- Sample mentors
 INSERT INTO Mentor (name, email, expertise_id) VALUES
-('Dr. Rakesh Kumar', 'rakesh@mentors.org', 1), -- AI/ML
-('Megha Rao', 'megha@mentors.org', 2);         -- Web Dev
+('Suresh Kumar', 'rakesh@100xdev.org', 1), -- AI/ML
+('Megha Rao', 'megha@tuf.org', 2);         -- Web Dev
 
 -- -----------------------------------------------
 -- 5. Table: Mentor_Availability
@@ -96,7 +96,7 @@ CREATE TABLE Mentor_Availability (
 
 -- Sample availability
 INSERT INTO Mentor_Availability VALUES
-(1, '2025-06-09', '10:00:00', '12:00:00'), -- Dr. Rakesh Kumar on Monday, June 9, 2025
+(1, '2025-06-09', '10:00:00', '12:00:00'), -- Suresh Kumar on Monday, June 9, 2025
 (2, '2025-06-11', '14:00:00', '16:00:00'); -- Megha Rao on Wednesday, June 11, 2025
 
 -- -----------------------------------------------
@@ -109,7 +109,7 @@ CREATE TABLE Internship (
     title VARCHAR(100) NOT NULL,
     capacity INT NOT NULL,
     description TEXT,
-    deadline DATE,
+    deadline DATE
 );
 
 -- Sample internships
@@ -118,10 +118,10 @@ INSERT INTO Internship (org_name, title, capacity, description, deadline) VALUES
 ('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10');
 
 -- -----------------------------------------------
--- 7. Table: Student_Internship_Application
+-- 7. Table: Application
 -- Tracks internship applications by students
 -- -----------------------------------------------
-CREATE TABLE Student_Internship_Application (
+CREATE TABLE Application (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     internship_id INT NOT NULL,
@@ -132,15 +132,15 @@ CREATE TABLE Student_Internship_Application (
 );
 
 -- Sample applications
-INSERT INTO Student_Internship_Application (student_id, internship_id, status) VALUES
+INSERT INTO Application (student_id, internship_id, status) VALUES
 (1, 1, 'Applied'),
 (2, 2, 'Applied');
 
 -- -----------------------------------------------
--- 8. Table: Mentor_Session_Slot
+-- 8. Table: Session_Slot
 -- Defines available session slots offered by mentors
 -- -----------------------------------------------
-CREATE TABLE Mentor_Session_Slot (
+CREATE TABLE Session_Slot (
     slot_id INT AUTO_INCREMENT PRIMARY KEY,
     mentor_id INT NOT NULL,
     date DATE NOT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE Mentor_Session_Slot (
 );
 
 -- Sample slots
-INSERT INTO Mentor_Session_Slot (mentor_id, date, time, duration, status) VALUES
+INSERT INTO Session_Slot (mentor_id, date, time, duration, status) VALUES
 (1, '2025-06-10', '10:00:00', 60, 'Available'),
 (2, '2025-06-12', '15:00:00', 45, 'Available');
 
@@ -164,13 +164,13 @@ CREATE TABLE Session (
     slot_id INT NOT NULL,
     student_id INT NOT NULL,
     booking_status ENUM('Scheduled', 'Completed', 'Cancelled') NOT NULL,
-    FOREIGN KEY (slot_id) REFERENCES Mentor_Session_Slot(slot_id),
+    FOREIGN KEY (slot_id) REFERENCES Session_Slot(slot_id),
     FOREIGN KEY (student_id) REFERENCES Student(student_id)
 );
 
 -- Sample booking
-INSERT INTO Session (slot_id, student_id, booking_status) VALUES
-(1, 1, 'Scheduled');
+ INSERT INTO Session (slot_id, student_id, booking_status) VALUES
+    (1, 1, 'Scheduled');
 
 -- -----------------------------------------------
 -- 10. Table: Feedback
@@ -180,16 +180,13 @@ CREATE TABLE Feedback (
     feedback_id INT AUTO_INCREMENT PRIMARY KEY,
     booking_id INT NOT NULL,
     student_id INT,
-    -- mentor_id INT,
     rating INT NOT NULL,
     comments TEXT,
     FOREIGN KEY (booking_id) REFERENCES Session(booking_id),
     FOREIGN KEY (student_id) REFERENCES Student(student_id),
-
-    -- FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
     CONSTRAINT check_rating CHECK (rating BETWEEN 1 AND 5)
 );
 
 -- Sample feedback
-INSERT INTO Feedback (booking_id, student_id, mentor_id, rating, comments) VALUES
-(1, 1, 1, 5, 'Great session on ML basics!');
+INSERT INTO Feedback (booking_id, student_id, rating, comments) VALUES
+(1, 1,  5, 'Great session on ML basics!');

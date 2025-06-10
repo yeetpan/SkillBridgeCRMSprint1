@@ -64,7 +64,7 @@ public class SessionSlot {
     // toString
     @Override
     public String toString() {
-        return "MentorSessionSlot{" +
+        return "SessionSlot{" +
                 "slotId=" + slotId +
                 ", mentorId=" + mentorId +
                 ", date=" + date +
