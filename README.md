@@ -19,7 +19,7 @@
 ### Prerequisites
 
 - MySQL 9.0+
-- Tables created and populated (see `populate.sql` if provided)
+- Tables created and populated (see `populate.sql` )
 
 ---
 
