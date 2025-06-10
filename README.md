@@ -63,7 +63,7 @@ java com.skillbridge.App
 | Folder             | Purpose                                                              |
 |--------------------|----------------------------------------------------------------------|
 | `util/`            | Database connection helper (`DB.java`)                               |
-| `entities/`        | POJOs representing each table (Student, Mentor, Internship, etc.)    |
+| `entities/`        | Classes representing each table (Student, Mentor, Internship, etc.)  |
 | `queries/`         | Centralized SQL query strings per entity                             |
 | `DAO/`             | Performs all SQL operations for each table                           |
 | `services/`        | Business logic (session scheduling, internship tracking)             |
