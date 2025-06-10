@@ -4,6 +4,7 @@ package com.skillbridge.entities;
 
 public class Application {
     //stu_id,int_id,status
+    private int application_id;
     private int student_id;
     private int internship_id;
     private String status;
@@ -37,10 +38,21 @@ public class Application {
         this.status = status;
     }
 
+    public int getApplication_id() {
+        return application_id;
+    }
+
+    public void setApplication_id(int application_id) {
+        this.application_id = application_id;
+    }
+
     @Override
     public String toString() {
         return "Application{" +
-                "status='" + status + '\'' +
+                "application_id=" + application_id +
+                ", student_id=" + student_id +
+                ", internship_id=" + internship_id +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

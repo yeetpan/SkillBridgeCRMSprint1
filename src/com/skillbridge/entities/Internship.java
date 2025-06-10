@@ -3,7 +3,7 @@ package com.skillbridge.entities;
 import java.util.Date;
 
 public class Internship {
-
+    private int internship_id;
     private String org_name;
     private String title;
     private int capacity;
@@ -15,6 +15,14 @@ public class Internship {
         this.capacity=capacity;
         this.description=description;
         this.deadline=deadline;
+    }
+
+    public int getInternship_id() {
+        return internship_id;
+    }
+
+    public void setInternship_id(int internship_id) {
+        this.internship_id = internship_id;
     }
 
     public String getOrg_name() {
@@ -56,4 +64,17 @@ public class Internship {
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
+
+    @Override
+    public String toString() {
+        return "Internship{" +
+                "internship_id=" + internship_id +
+                ", org_name='" + org_name + '\'' +
+                ", title='" + title + '\'' +
+                ", capacity=" + capacity +
+                ", description='" + description + '\'' +
+                ", deadline=" + deadline +
+                '}';
+    }
 }
+

@@ -2,6 +2,7 @@ package com.skillbridge.entities;
 
 public class Session {
     //slot_id, student_id, booking_status
+    private int booking_id;
     private int slot_id;                    //references from mentor(lookup from mentor).
     private int student_id;
     private String booking_status;
@@ -35,10 +36,21 @@ public class Session {
         this.booking_status = booking_status;
     }
 
+    public int getBooking_id() {
+        return booking_id;
+    }
+
+    public void setBooking_id(int booking_id) {
+        this.booking_id = booking_id;
+    }
+
     @Override
     public String toString() {
         return "Session{" +
-                "booking_status='" + booking_status + '\'' +
+                "booking_id=" + booking_id +
+                ", slot_id=" + slot_id +
+                ", student_id=" + student_id +
+                ", booking_status='" + booking_status + '\'' +
                 '}';
     }
 }
