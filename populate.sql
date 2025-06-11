@@ -1,3 +1,6 @@
+        CREATE DATABASE skillbridge;
+        USE skillbridge;
+
         -- -----------------------------------------------
         -- 1. Table: Interests
         -- Stores all possible fields of expertise or interest
@@ -103,13 +106,13 @@
 
         -- Sample mentors
         INSERT INTO Mentor (name, email, expertise_id) VALUES
-        ('Suresh Kumar', 'rakesh@100xdev.org', 1), -- AI/ML
-        ('Megha Rao', 'megha@tuf.org', 2);         -- Web Dev
-        ('Rajiv Menon', 'rajiv@mentor.org', 4),    -- Data Science
-        ('Nikita Jain', 'nikita@mentor.org', 6),   -- DevOps
-        ('Aditya Bansal', 'aditya@mentor.org', 7), -- Mobile App
-        ('Ritika Shah', 'ritika@mentor.org', 8),   -- Blockchain
-        ('Arun Prakash', 'arun@mentor.org', 13);   -- Big Data
+        ('Suresh Kumar', 'suresh@100xdev.org', 1),
+        ('Megha Rao', 'megha@tuf.org', 2),
+        ('Rajiv Menon', 'rajiv@learnerbro.org', 4),
+        ('Nikita Jain', 'nikita@freecodecamp.org', 6),
+        ('Aditya Bansal', 'aditya@nextwave.org', 7),
+        ('Ritika Shah', 'ritika@jspiders.org', 8),
+        ('Arun Prakash', 'arun@qspiders.org', 13);
         -- -----------------------------------------------
 
         -- -----------------------------------------------
@@ -128,7 +131,7 @@
         -- Sample internships
         INSERT INTO Internship (org_name, title, capacity, description, deadline) VALUES
         ('Sarvam.AI', 'AI Intern', 3, 'Work with AI/ML team', '2025-07-15'),
-        ('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10')
+        ('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10'),
         ('DigiCloud', 'Cloud Ops Intern', 2, 'Cloud DevOps training', '2025-07-20'),
         ('ZettaChain', 'Blockchain R&D', 2, 'Smart contracts and chains', '2025-07-12'),
         ('DatamineX', 'Big Data Intern', 3, 'Work with Hadoop/Spark', '2025-07-22');
@@ -187,10 +190,7 @@
        (4, '2025-06-13', '15:30:00', 60, 'Available'),
        (5, '2025-06-14', '16:00:00', 45, 'Available'),
        (6, '2025-06-15', '09:30:00', 60, 'Available'),
-       (7, '2025-06-16', '13:00:00', 60, 'Available'),
-       (1, '2025-06-17', '10:00:00', 60, 'Available'),
-       (2, '2025-06-18', '11:00:00', 45, 'Available'),
-       (3, '2025-06-19', '14:00:00', 30, 'Available');
+       (7, '2025-06-16', '13:00:00', 60, 'Available');
 
         -- -----------------------------------------------
         -- 8. Table: Session

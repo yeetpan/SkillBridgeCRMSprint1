@@ -28,6 +28,7 @@ public class SessionDAO {
                 session.setBooking_id(rs.getInt(1));
             }
             preparedStatement.close();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
