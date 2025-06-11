@@ -10,7 +10,14 @@ public class SessionSlot {
     private Time time;
     private int duration;
     private String status;
-
+    public SessionSlot(int slotId,int mentorId,Date date,Time time,int duration,String status){
+            this.slotId=slotId;
+            this.mentorId=mentorId;
+            this.date=date;
+            this.time=time;
+            this.duration=duration;
+            this.status=status;
+    }
     // Getters
     public int getSlotId() {
         return slotId;
