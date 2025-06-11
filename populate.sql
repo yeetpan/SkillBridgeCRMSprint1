@@ -128,7 +128,10 @@
         -- Sample internships
         INSERT INTO Internship (org_name, title, capacity, description, deadline) VALUES
         ('Sarvam.AI', 'AI Intern', 3, 'Work with AI/ML team', '2025-07-15'),
-        ('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10');
+        ('AccternityUI', 'Frontend Intern', 2, 'Work on React/JS', '2025-07-10')
+        ('DigiCloud', 'Cloud Ops Intern', 2, 'Cloud DevOps training', '2025-07-20'),
+        ('ZettaChain', 'Blockchain R&D', 2, 'Smart contracts and chains', '2025-07-12'),
+        ('DatamineX', 'Big Data Intern', 3, 'Work with Hadoop/Spark', '2025-07-22');
 
         -- -----------------------------------------------
         -- 6. Table: Application
@@ -147,7 +150,20 @@
         -- Sample applications
         INSERT INTO Application (student_id, internship_id, status) VALUES
         (1, 1, 'Applied'),
-        (2, 2, 'Applied');
+        (2, 2, 'Applied'),
+        (3, 3, 'Applied'),
+        (4, 1, 'Applied'),
+        (5, 2, 'Applied'),
+        (6, 4, 'Applied'),
+        (7, 1, 'Applied'),
+        (8, 5, 'Applied'),
+        (9, 2, 'Applied'),
+        (10, 3, 'Applied'),
+        (11, 1, 'Applied'),
+        (12, 4, 'Applied'),
+        (13, 5, 'Applied'),
+        (14, 3, 'Applied'),
+        (15, 4, 'Applied');
 
         -- -----------------------------------------------
         -- 7. Table: Session_Slot
@@ -165,8 +181,16 @@
 
         -- Sample slots
         INSERT INTO Session_Slot (mentor_id, date, time, duration, status) VALUES
-        (1, '2025-06-10', '10:00:00', 60, 'Available'),
-        (2, '2025-06-12', '15:00:00', 45, 'Available');
+       (1, '2025-06-10', '10:00:00', 60, 'Available'),
+       (2, '2025-06-11', '11:00:00', 45, 'Available'),
+       (3, '2025-06-12', '14:00:00', 30, 'Available'),
+       (4, '2025-06-13', '15:30:00', 60, 'Available'),
+       (5, '2025-06-14', '16:00:00', 45, 'Available'),
+       (6, '2025-06-15', '09:30:00', 60, 'Available'),
+       (7, '2025-06-16', '13:00:00', 60, 'Available'),
+       (1, '2025-06-17', '10:00:00', 60, 'Available'),
+       (2, '2025-06-18', '11:00:00', 45, 'Available'),
+       (3, '2025-06-19', '14:00:00', 30, 'Available');
 
         -- -----------------------------------------------
         -- 8. Table: Session
@@ -185,7 +209,13 @@
 
         -- Sample booking
          INSERT INTO Session (slot_id, student_id,mentor_id, booking_status) VALUES
-            (1, 1,1, 'Scheduled');
+            (1, 1, 1, 'Scheduled'),
+            (2, 2, 2, 'Scheduled'),
+            (3, 3, 3, 'Scheduled'),
+            (4, 4, 4, 'Scheduled'),
+            (5, 5, 5, 'Scheduled'),
+            (6, 6, 6, 'Scheduled'),
+            (7, 7, 7, 'Scheduled');
 
         -- -----------------------------------------------
         -- 9. Table: Feedback
@@ -204,4 +234,10 @@
 
         -- Sample feedback
         INSERT INTO Feedback (booking_id, student_id, rating, comments) VALUES
-        (1, 1,  5, 'Great session on ML basics!');
+        (1, 1, 5, 'Excellent ML insights'),
+        (2, 2, 4, 'Good frontend tips'),
+        (3, 3, 5, 'Loved the data science discussion'),
+        (4, 4, 3, 'Could be more structured'),
+        (5, 5, 4, 'Great mobile app ideas'),
+        (6, 6, 5, 'Amazing on-chain explanation'),
+        (7, 7, 5, 'Big data topics were very clear');
