@@ -42,11 +42,11 @@ public class MentorDAO {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Mentor mentor = new Mentor(
-                    rs.getInt("mentor_id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getInt("expertise_id")
             );
+            mentor.setMentor_id(rs.getInt("mentor_id"));
             listOfMentors.add(mentor);
         }
         preparedStatement.close();
@@ -115,11 +115,11 @@ public class MentorDAO {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Mentor mentor = new Mentor(
-                    rs.getInt("mentor_id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getInt("expertise_id")
             );
+            mentor.setMentor_id(rs.getInt("mentor_id"));
             matchedMentors.add(mentor);
         }
         preparedStatement.close();

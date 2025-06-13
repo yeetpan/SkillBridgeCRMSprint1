@@ -7,6 +7,8 @@
         private String student_email;           //Student Email (NOT NULL & UNIQUE)
         private String student_college;         //Student College name
 
+         public Student(){}
+
         public Student(int student_id,String student_name,String student_email,String student_college){
             this.student_id=student_id;
             this.student_name=student_name;

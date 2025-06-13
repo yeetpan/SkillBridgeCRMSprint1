@@ -7,12 +7,13 @@ public class Mentor {
     private String mentor_email;        //MENTOR EMAIL UNIQUE AND NOT NULL
     private int  expertise_id;          //FOREIGN KEY REFERENCES INTERESTS TABLE
 
-    public  Mentor(int mentor_id,String mentor_name,String mentor_email,int expertise_id){
-        this.mentor_id=mentor_id;
+    public  Mentor(String mentor_name,String mentor_email,int expertise_id){
         this.mentor_name=mentor_name;
         this.mentor_email=mentor_email;
         this.expertise_id=expertise_id;
     }
+
+    public Mentor(){}
 
     public int getMentor_id() {
         return mentor_id;

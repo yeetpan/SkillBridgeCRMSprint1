@@ -13,6 +13,8 @@ public class Application {
         this.internship_id=internship_id;
         this.status=status;
     }
+    // an empty constructor for some use-cases.
+    public  Application(){}
 
     public int getStudent_id() {
         return student_id;

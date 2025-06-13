@@ -1,5 +1,6 @@
 package com.skillbridge.entities;
 //add_mentor_id.
+// what we can do is when matchmaking is done,we will show the mentors and their sessions and then let student select what mentor he wants then insert that data into Session.
 public class Session {
     //slot_id, student_id, booking_status
     private int booking_id;
@@ -7,6 +8,9 @@ public class Session {
     private int mentor_id;
     private int student_id;
     private String booking_status;
+
+    public Session(){}
+
     public Session(int slot_id,int student_id,int mentor_id,String booking_status){
         this.slot_id=slot_id;
         this.student_id=student_id;

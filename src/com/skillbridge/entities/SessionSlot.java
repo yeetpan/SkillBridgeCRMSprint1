@@ -10,6 +10,9 @@ public class SessionSlot {
     private Time time;
     private int duration;
     private String status;
+
+    public SessionSlot(){}
+
     public SessionSlot(int slotId,int mentorId,Date date,Time time,int duration,String status){
             this.slotId=slotId;
             this.mentorId=mentorId;

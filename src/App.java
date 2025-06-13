@@ -4,7 +4,10 @@ import com.skillbridge.entities.*;
 import com.skillbridge.util.StudentNotFoundException;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.sql.Time;
+import java.sql.Date;
+import java.util.Scanner;
+
 
 public class App {
     private static final Scanner sc = new Scanner(System.in);

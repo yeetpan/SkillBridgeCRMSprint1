@@ -9,6 +9,9 @@ public class Internship {
     private int capacity;
     private String description;
     private Date deadline;
+
+    public Internship(){}
+
     public Internship(String org_name,String title,int capacity,String description,Date deadline){
         this.org_name=org_name;
         this.title=title;

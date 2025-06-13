@@ -10,6 +10,8 @@ public class StudentInterest {
         this.interestId = interestId;
     }
 
+    public StudentInterest(){}
+
     // Getters and Setters
     public int getStudentId() {
         return studentId;
