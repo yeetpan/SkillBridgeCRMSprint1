@@ -16,6 +16,8 @@ public class App {
             System.out.println("2. Mentor");
             System.out.println("3. View Internships");
             System.out.println("4. Exit");
+            System.out.println("5.Register as a Student");
+            System.out.println("6.Register as a  Mentor");
             System.out.print("Enter your choice: ");
             int role = sc.nextInt();
             sc.nextLine(); // consume newline
@@ -63,6 +65,7 @@ public class App {
                     ApplicationDAO.createApplication(new Application(studentId, iid, "Applied"));
                 }
                 case 3 -> {
+                    //display the match
                     System.out.print("Enter Slot ID to book: ");
                     int slotId = sc.nextInt(); sc.nextLine();
                     SessionDAO.createSession(new Session(slotId, studentId, "Scheduled"));
@@ -99,8 +102,7 @@ public class App {
             System.out.println("\n--- Mentor Menu ---");
             System.out.println("1. View My Session Slots");
             System.out.println("2. Add Slot");
-            System.out.println("3. View My Internships");
-            System.out.println("4. Back to Main Menu");
+            System.out.println("3. Back to Main Menu");
             int ch = sc.nextInt();
             sc.nextLine();
 
@@ -113,13 +115,10 @@ public class App {
                     String time = sc.nextLine();
                     System.out.print("Duration in minutes: ");
                     int duration = sc.nextInt(); sc.nextLine();
-                    SessionSlot slot = new SessionSlot(0, mentorId, Date.valueOf(date), Time.valueOf(time), duration, "Available");
+                        SessionSlot slot = new SessionSlot(0, mentorId, Date.valueOf(date), Time.valueOf(time), duration, "Available");
                     SessionSlotDAO.insert(slot);
                 }
-                case 3 -> InternshipDAO.readInternship().stream()
-                        .filter(i -> i.getMentorId() == mentorId)
-                        .forEach(System.out::println);
-                case 4 -> { return; }
+                case 3 -> { return; }
                 default -> System.out.println("Invalid choice.");
             }
         }
