@@ -1,5 +1,6 @@
 package com.skillbridge.util;
 import java.util.regex.Pattern;
+//App code
 
 public class EmailValidate {
     // Method to check if the email is valid
@@ -16,3 +17,8 @@ public class EmailValidate {
         return email != null && p.matcher(email).matches();
     }
 }
+
+
+//student/mentor
+//register->session/internship track
+//

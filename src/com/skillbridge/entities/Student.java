@@ -1,5 +1,5 @@
     package com.skillbridge.entities;
-
+     // change the casing->studentName.
     public class Student {
         // add variables and standard getters,setters.
         private int student_id;                 //PRIMARY KEY

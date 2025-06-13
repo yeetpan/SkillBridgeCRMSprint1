@@ -15,8 +15,7 @@ public class InterestDAO {
             PreparedStatement preparedStatement=con.prepareStatement(InterestsQueries.SHOW_INTERESTS);
             ResultSet rs=preparedStatement.executeQuery();
             while(rs.next()){
-                System.out.println("Interest id -> "+rs.getInt("interest_id"));
-                System.out.println("Interest Name -> "+rs.getString("interest_name"));
+                System.out.println("Interest id -> "+rs.getInt("interest_id")+ "  "+rs.getString("interest_name"));
             }
             preparedStatement.close();
         }catch (SQLException e){

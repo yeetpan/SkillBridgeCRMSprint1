@@ -100,7 +100,7 @@
             mentor_id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
-            expertise_id INT NOT NULL,
+            expertise_id INT NOT NULL,  --MENTOR HAS ONLY 1 EXPERTISE.
             FOREIGN KEY (expertise_id) REFERENCES Interests(interest_id)
         );
 

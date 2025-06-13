@@ -1,15 +1,25 @@
 package com.skillbridge.entities;
-
+//add_mentor_id.
 public class Session {
     //slot_id, student_id, booking_status
     private int booking_id;
     private int slot_id;                    //references from mentor(lookup from mentor).
+    private int mentor_id;
     private int student_id;
     private String booking_status;
-    public Session(int slot_id,int student_id,String booking_status){
+    public Session(int slot_id,int student_id,int mentor_id,String booking_status){
         this.slot_id=slot_id;
         this.student_id=student_id;
+        this.mentor_id=mentor_id;
         this.booking_status=booking_status;
+    }
+
+    public int getMentor_id() {
+        return mentor_id;
+    }
+
+    public void setMentor_id(int mentor_id) {
+        this.mentor_id = mentor_id;
     }
 
     public int getSlot_id() {
@@ -49,6 +59,7 @@ public class Session {
         return "Session{" +
                 "booking_id=" + booking_id +
                 ", slot_id=" + slot_id +
+                ", mentor_id=" + mentor_id +
                 ", student_id=" + student_id +
                 ", booking_status='" + booking_status + '\'' +
                 '}';

@@ -8,12 +8,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 //for now email is considered ID can also be taken.
-
+//Use ArrayList->20 base limit.
+//SELECT * FROM Session WHERE
 public class SessionBookingService {
     private static final int MAX_QUEUE_SIZE = 20;
     private static final Duration EXPIRY_DURATION = Duration.ofHours(2);
     private static final String LOG_FILE = "session_log.txt";
-
+    //ArrayList<Student> stud=
     // Internal class to store booking data
     private static class Booking {
         String studentEmail;
@@ -65,3 +66,17 @@ public class SessionBookingService {
         }
     }
 }
+
+
+
+
+//List<Session> sessionBookings = new ArrayList<>();
+//
+//public void bookSession(Student student, Mentor mentor, Slot slot) {
+//    if (sessionBookings.size() < 20) {
+//        sessionBookings.add(new Session(student, mentor, slot));
+//        System.out.println("Booking confirmed for " + student.getName());
+//    } else {
+//        System.out.println("Booking full! Cannot accept more than 20 students.");
+//    }
+//}
