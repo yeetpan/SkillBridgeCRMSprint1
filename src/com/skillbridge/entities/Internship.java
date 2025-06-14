@@ -3,8 +3,8 @@ package com.skillbridge.entities;
 import java.util.Date;
 
 public class Internship {
-    private int internship_id;
-    private String org_name;
+    private int internshipId;
+    private String orgName;
     private String title;
     private int capacity;
     private String description;
@@ -12,28 +12,28 @@ public class Internship {
 
     public Internship(){}
 
-    public Internship(String org_name,String title,int capacity,String description,Date deadline){
-        this.org_name=org_name;
+    public Internship(String orgName,String title,int capacity,String description,Date deadline){
+        this.orgName=orgName;
         this.title=title;
         this.capacity=capacity;
         this.description=description;
         this.deadline=deadline;
     }
 
-    public int getInternship_id() {
-        return internship_id;
+    public int getInternshipId() {
+        return internshipId;
     }
 
-    public void setInternship_id(int internship_id) {
-        this.internship_id = internship_id;
+    public void setInternshipId(int internshipId) {
+        this.internshipId = internshipId;
     }
 
-    public String getOrg_name() {
-        return org_name;
+    public String getOrgName() {
+        return orgName;
     }
 
-    public void setOrg_name(String org_name) {
-        this.org_name = org_name;
+    public void setOrgName(String org_name) {
+        this.orgName = orgName;
     }
 
     public String getTitle() {
@@ -71,8 +71,8 @@ public class Internship {
     @Override
     public String toString() {
         return "Internship{" +
-                "internship_id=" + internship_id +
-                ", org_name='" + org_name + '\'' +
+                "internship_id=" + internshipId +
+                ", org_name='" + orgName + '\'' +
                 ", title='" + title + '\'' +
                 ", capacity=" + capacity +
                 ", description='" + description + '\'' +

@@ -10,33 +10,48 @@ import java.util.Optional;
 
 public class SessionDAO {
 
-    public static void createSession(Session session) throws SQLException {
-        try (Connection con = DB.connect();
-             PreparedStatement preparedStatement = con.prepareStatement(SessionQueries.INSERT, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, session.getSlot_id());
-            preparedStatement.setInt(2, session.getStudent_id());
-            preparedStatement.setInt(3, session.getMentor_id());
-            preparedStatement.setString(4, session.getBooking_status());
+    // Create new session booking
+    public static void createSession(Session session) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to create session.");
+            return;
+        }
 
-            int rowsAffected = preparedStatement.executeUpdate();
+        try (PreparedStatement ps = con.prepareStatement(SessionQueries.INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, session.getSlotId());
+            ps.setInt(2, session.getStudentId());
+            ps.setInt(3, session.getMentorId());
+            ps.setString(4, session.getBookingStatus());
+
+            int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Session booked successfully!!");
-            }
-
-            try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
-                if (rs.next()) {
-                    session.setBooking_id(rs.getInt(1));
+                System.out.println("✅ Session booked successfully.");
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        session.setBookingId(rs.getInt(1));
+                    }
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("SQL Error [createSession]: " + e.getMessage());
+        } finally {
+            DB.closeConnection(con);
         }
     }
 
-    public static ArrayList<Session> getSessionsByStudent(int studentId) throws SQLException {
+    // Retrieve sessions by student ID
+    public static ArrayList<Session> getSessionsByStudent(int studentId) {
         ArrayList<Session> sessionList = new ArrayList<>();
-        try (Connection con = DB.connect();
-             PreparedStatement preparedStatement = con.prepareStatement(SessionQueries.GET_BY_STUDENT)) {
-            preparedStatement.setInt(1, studentId);
-            try (ResultSet rs = preparedStatement.executeQuery()) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to fetch sessions.");
+            return sessionList;
+        }
+
+        try (PreparedStatement ps = con.prepareStatement(SessionQueries.GET_BY_STUDENT)) {
+            ps.setInt(1, studentId);
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Session session = new Session(
                             rs.getInt("slot_id"),
@@ -44,39 +59,60 @@ public class SessionDAO {
                             rs.getInt("mentor_id"),
                             rs.getString("booking_status")
                     );
-                    session.setBooking_id(rs.getInt("booking_id"));
+                    session.setBookingId(rs.getInt("booking_id"));
                     sessionList.add(session);
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("SQL Error [getSessionsByStudent]: " + e.getMessage());
+        } finally {
+            DB.closeConnection(con);
         }
+
         return sessionList;
     }
 
-    public static void UpdateSessionStatus(int bookingId, String bookingStatus) throws SQLException {
-        try (Connection con = DB.connect();
-             PreparedStatement preparedStatement = con.prepareStatement(SessionQueries.UPDATE_STATUS)) {
-            // Standardize case for database consistency
-            String normalizedStatus = bookingStatus;
+    // Update session status by booking ID
+    public static void updateSessionStatus(int bookingId, String bookingStatus) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to update session status.");
+            return;
+        }
+
+        try (PreparedStatement ps = con.prepareStatement(SessionQueries.UPDATE_STATUS)) {
+            String normalizedStatus = bookingStatus.trim();
             if (bookingStatus.equalsIgnoreCase("cancelled")) {
                 normalizedStatus = "Cancelled";
             } else if (bookingStatus.equalsIgnoreCase("completed")) {
                 normalizedStatus = "Completed";
             }
-            preparedStatement.setString(1, normalizedStatus);
-            preparedStatement.setInt(2, bookingId);
 
-            int rowsAffected = preparedStatement.executeUpdate();
+            ps.setString(1, normalizedStatus);
+            ps.setInt(2, bookingId);
+
+            int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Session status updated successfully!!");
+                System.out.println("✅ Session status updated successfully.");
             }
+        } catch (SQLException e) {
+            System.err.println("SQL Error [updateSessionStatus]: " + e.getMessage());
+        } finally {
+            DB.closeConnection(con);
         }
     }
 
-    public static Optional<Session> getSessionByBookingId(int bookingId) throws SQLException {
-        try (Connection con = DB.connect();
-             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM Session WHERE booking_id = ?")) {
-            preparedStatement.setInt(1, bookingId);
-            try (ResultSet rs = preparedStatement.executeQuery()) {
+    // Retrieve session by booking ID
+    public static Optional<Session> getSessionByBookingId(int bookingId) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to fetch session.");
+            return Optional.empty();
+        }
+
+        try (PreparedStatement ps = con.prepareStatement(SessionQueries.GET_BY_STUDENT)) {
+            ps.setInt(1, bookingId);
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Session session = new Session(
                             rs.getInt("slot_id"),
@@ -84,11 +120,16 @@ public class SessionDAO {
                             rs.getInt("mentor_id"),
                             rs.getString("booking_status")
                     );
-                    session.setBooking_id(rs.getInt("booking_id"));
+                    session.setBookingId(rs.getInt("booking_id"));
                     return Optional.of(session);
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("SQL Error [getSessionByBookingId]: " + e.getMessage());
+        } finally {
+            DB.closeConnection(con);
         }
+
         return Optional.empty();
     }
 }

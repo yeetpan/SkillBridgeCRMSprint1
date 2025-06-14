@@ -41,7 +41,7 @@ public class App {
     private static void handleStudent() throws SQLException, StudentNotFoundException {
         System.out.print("Enter your email: ");
         String email = sc.nextLine();
-        int studentId = StudentDAO.GetStudentByEmail(email);
+        int studentId = StudentDAO.getStudentIdByEmail(email);
 
         if (studentId == -1) {
             throw new StudentNotFoundException("Student Not Found!");

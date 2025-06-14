@@ -10,99 +10,137 @@ import java.util.ArrayList;
 public class FeedbackDAO {
 
     public static void createFeedback(Feedback feedback) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to create feedback.");
+            return;
+        }
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
         try {
-            Connection con = DB.connect();
-            String query = FeedBackQueries.INSERT;
-            PreparedStatement preparedStatement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, feedback.getBookingId());
+            ps = con.prepareStatement(FeedBackQueries.INSERT, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, feedback.getBookingId());
 
-            // Handle nullable student_id
             if (feedback.getStudentId() != null) {
-                preparedStatement.setInt(2, feedback.getStudentId());
+                ps.setInt(2, feedback.getStudentId());
             } else {
-                preparedStatement.setNull(2, Types.INTEGER);
+                ps.setNull(2, Types.INTEGER);
             }
 
-            preparedStatement.setInt(3, feedback.getRating());
-            preparedStatement.setString(4, feedback.getComments());
+            ps.setInt(3, feedback.getRating());
+            ps.setString(4, feedback.getComments());
 
-            int rowsAffected = preparedStatement.executeUpdate();
+            int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Feedback inserted successfully!!");
+                System.out.println("✅ Feedback inserted successfully.");
+                rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    feedback.setFeedbackId(rs.getInt(1));
+                }
             }
-
-            ResultSet rs = preparedStatement.getGeneratedKeys();
-            if (rs.next()) {
-                feedback.setFeedbackId(rs.getInt(1));
-            }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("SQL Error [createFeedback]: " + e.getMessage());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception ignore) {}
+            try { if (ps != null) ps.close(); } catch (Exception ignore) {}
+            DB.closeConnection(con);
         }
     }
 
-    public static ArrayList<Feedback> getFeedbackByStudent(int studentId) throws SQLException {
+    public static ArrayList<Feedback> getFeedbackByStudent(int studentId) {
         ArrayList<Feedback> feedbackList = new ArrayList<>();
         Connection con = DB.connect();
-        String query = FeedBackQueries.GET_BY_STUDENT;
-        PreparedStatement preparedStatement = con.prepareStatement(query);
-        preparedStatement.setInt(1, studentId);
-        ResultSet rs = preparedStatement.executeQuery();
-
-        while (rs.next()) {
-            Feedback feedback = new Feedback();
-            feedback.setFeedbackId(rs.getInt("feedback_id"));
-            feedback.setBookingId(rs.getInt("booking_id"));
-
-            // Handle nullable student_id
-            int studentIdFromDb = rs.getInt("student_id");
-            if (rs.wasNull()) {
-                feedback.setStudentId(null);
-            } else {
-                feedback.setStudentId(studentIdFromDb);
-            }
-
-            feedback.setRating(rs.getInt("rating"));
-            feedback.setComments(rs.getString("comments"));
-            feedbackList.add(feedback);
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to fetch feedback.");
+            return feedbackList;
         }
-        preparedStatement.close();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = con.prepareStatement(FeedBackQueries.GET_BY_STUDENT);
+            ps.setInt(1, studentId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setFeedbackId(rs.getInt("feedback_id"));
+                feedback.setBookingId(rs.getInt("booking_id"));
+
+                int studentIdFromDb = rs.getInt("student_id");
+                if (rs.wasNull()) {
+                    feedback.setStudentId(null);
+                } else {
+                    feedback.setStudentId(studentIdFromDb);
+                }
+
+                feedback.setRating(rs.getInt("rating"));
+                feedback.setComments(rs.getString("comments"));
+                feedbackList.add(feedback);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error [getFeedbackByStudent]: " + e.getMessage());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception ignore) {}
+            try { if (ps != null) ps.close(); } catch (Exception ignore) {}
+            DB.closeConnection(con);
+        }
+
         return feedbackList;
     }
 
-    public static void UpdateFeedback(int feedbackId, int rating, String comments) {
-        try {
-            Connection con = DB.connect();
-            String query = FeedBackQueries.UPDATE;
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, rating);
-            preparedStatement.setString(2, comments);
-            preparedStatement.setInt(3, feedbackId);
+    public static void updateFeedback(int feedbackId, int rating, String comments) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to update feedback.");
+            return;
+        }
 
-            int rowsAffected = preparedStatement.executeUpdate();
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(FeedBackQueries.UPDATE);
+            ps.setInt(1, rating);
+            ps.setString(2, comments);
+            ps.setInt(3, feedbackId);
+
+            int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Feedback updated successfully!!");
+                System.out.println("✅ Feedback updated successfully.");
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("SQL Error [updateFeedback]: " + e.getMessage());
+        } finally {
+            try { if (ps != null) ps.close(); } catch (Exception ignore) {}
+            DB.closeConnection(con);
         }
     }
 
-    public static void DeleteFeedback(int feedbackId) {
-        try {
-            Connection con = DB.connect();
-            String query = FeedBackQueries.DELETE;
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, feedbackId);
+    public static void deleteFeedback(int feedbackId) {
+        Connection con = DB.connect();
+        if (con == null) {
+            System.err.println("Database connection failed: Unable to delete feedback.");
+            return;
+        }
 
-            int rowsAffected = preparedStatement.executeUpdate();
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(FeedBackQueries.DELETE);
+            ps.setInt(1, feedbackId);
+
+            int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Deleted Feedback with id " + feedbackId + " successfully!!");
+                System.out.println("🗑️ Feedback deleted with ID: " + feedbackId);
             }
-            preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("SQL Error [deleteFeedback]: " + e.getMessage());
+        } finally {
+            try { if (ps != null) ps.close(); } catch (Exception ignore) {}
+            DB.closeConnection(con);
         }
     }
 }
