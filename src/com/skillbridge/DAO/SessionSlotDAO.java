@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class SessionSlotDAO {
 
-    public static void insert(SessionSlot slot) {
+    public static void InsertSlot(SessionSlot slot) {
         try (Connection con = DB.connect();
              PreparedStatement ps = con.prepareStatement(SessionSlotQueries.INSERT)) {
 
@@ -32,20 +32,19 @@ public class SessionSlotDAO {
         ArrayList<SessionSlot> slots = new ArrayList<>();
 
         try (Connection con = DB.connect();
-             PreparedStatement ps = con.prepareStatement(SessionSlotQueries.GET_AVAILABLE_BY_MENTOR)) {
+             PreparedStatement ps = con.prepareStatement(SessionSlotQueries.GET_AVAILABLE_BY_MENTOR,Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, mentorId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                slots.add(new SessionSlot(
-                        rs.getInt("slot_id"),
-                        rs.getInt("mentor_id"),
-                        rs.getDate("date"),
-                        rs.getTime("time"),
-                        rs.getInt("duration"),
-                        rs.getString("status")
-                ));
+                SessionSlot sessionSlot=new SessionSlot();
+                sessionSlot.setSlotId(rs.getInt("slot_id"));
+                sessionSlot.setMentorId(rs.getInt("mentor_id"));
+                sessionSlot.setDate(rs.getDate("date"));
+                sessionSlot.setDuration(rs.getInt("duration"));
+                sessionSlot.setStatus(rs.getString("status"));
+                slots.add(sessionSlot);
             }
 
         } catch (SQLException e) {
@@ -54,6 +53,7 @@ public class SessionSlotDAO {
 
         return slots;
     }
+
 
     public static void updateStatus(int slotId, String newStatus) {
         try (Connection con = DB.connect();

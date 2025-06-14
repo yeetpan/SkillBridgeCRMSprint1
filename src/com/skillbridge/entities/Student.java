@@ -9,8 +9,7 @@
 
          public Student(){}
 
-        public Student(int student_id,String student_name,String student_email,String student_college){
-            this.student_id=student_id;
+        public Student(String student_name,String student_email,String student_college){
             this.student_name=student_name;
             this.student_email=student_email;
             this.student_college=student_college;
@@ -47,6 +46,7 @@
         public void setStudent_college(String student_college) {
             this.student_college = student_college;
         }
+
         @Override
         public String toString() {
             return "Student{" +

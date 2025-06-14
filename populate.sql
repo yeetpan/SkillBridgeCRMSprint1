@@ -114,7 +114,17 @@
         ('Ritika Shah', 'ritika@jspiders.org', 8),
         ('Arun Prakash', 'arun@qspiders.org', 13);
         -- -----------------------------------------------
-
+        --Internal Table
+        CREATE TABLE Matchmaking (
+            matchmaking_id INT AUTO_INCREMENT PRIMARY KEY,
+            student_id INT NOT NULL,
+            mentor_id INT NOT NULL,
+            interest_id INT NOT NULL,
+            FOREIGN KEY (student_id) REFERENCES Student(student_id),
+            FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
+            FOREIGN KEY (interest_id) REFERENCES Interests(interest_id)
+        );
+       -------------------------------------------------
         -- -----------------------------------------------
         -- 5. Table: Internship
         -- Stores internship listings linked to a mentor

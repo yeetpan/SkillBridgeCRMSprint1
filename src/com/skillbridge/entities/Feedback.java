@@ -10,8 +10,7 @@ public class Feedback {
     // Constructors
     public Feedback() {}
 
-    public Feedback(int feedbackId, int bookingId, Integer studentId, int rating, String comments) {
-        this.feedbackId = feedbackId;
+    public Feedback( int bookingId, Integer studentId, int rating, String comments) {
         this.bookingId = bookingId;
         this.studentId = studentId;
         this.rating = rating;

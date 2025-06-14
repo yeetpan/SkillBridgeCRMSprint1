@@ -1,82 +1,80 @@
 package com.skillbridge.services;
 
+import com.skillbridge.DAO.SessionDAO;
+import com.skillbridge.DAO.SessionSlotDAO;
+import com.skillbridge.entities.Session;
+import com.skillbridge.entities.SessionSlot;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.Duration;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
-//for now email is considered ID can also be taken.
-//Use ArrayList->20 base limit.
-//SELECT * FROM Session WHERE
 public class SessionBookingService {
     private static final int MAX_QUEUE_SIZE = 20;
-    private static final Duration EXPIRY_DURATION = Duration.ofHours(2);
     private static final String LOG_FILE = "session_log.txt";
-    //ArrayList<Student> stud=
-    // Internal class to store booking data
+
     private static class Booking {
-        String studentEmail;
-        String mentorEmail;
+        int studentId;
+        int mentorId;
         LocalDateTime timestamp;
 
-        Booking(String studentEmail, String mentorEmail, LocalDateTime timestamp) {
-            this.studentEmail = studentEmail;
-            this.mentorEmail = mentorEmail;
+        Booking(int studentId, int mentorId, LocalDateTime timestamp) {
+            this.studentId = studentId;
+            this.mentorId = mentorId;
             this.timestamp = timestamp;
         }
     }
 
     private static final Queue<Booking> bookingQueue = new LinkedList<>();
 
-    //synchronized used for Date and Time related operations.
-    public static synchronized String bookSession(String studentEmail, String mentorEmail) {
-        LocalDateTime now = LocalDateTime.now();
-        cleanExpired(now);
-
+    public static synchronized String bookSession(int studentId, int mentorId,int slotId) {
         if (bookingQueue.size() >= MAX_QUEUE_SIZE) {
             return "Booking queue is full. Please try again later.";
         }
 
-        Booking booking = new Booking(studentEmail, mentorEmail, now);
+        // Step 1: Find an available session slot for the mentor
+        List<SessionSlot> availableSlots = SessionSlotDAO.getAvailableByMentor(mentorId);
+        if (availableSlots.isEmpty()) {
+            return "No available slots found for the selected mentor.";
+        }
+
+
+
+        // Step 2: Update slot status to 'Booked'
+        SessionSlotDAO.updateStatus(slotId, "Booked");
+
+        // Step 3: Create session and persist it
+        Session session = new Session();
+        session.setSlot_id(slotId);
+        session.setStudent_id(studentId);
+        session.setMentor_id(mentorId);
+        session.setBooking_status("Pending");
+
+        try {
+            SessionDAO.createSession(session);
+        } catch (Exception e) {
+            return "Error while booking session: " + e.getMessage();
+        }
+
+        // Step 4: Queue and log the booking
+        Booking booking = new Booking(studentId, mentorId, LocalDateTime.now());
         bookingQueue.offer(booking);
         logToFile(booking);
 
-        return  studentEmail + " booked a session with " + mentorEmail + ".";
-    }
-
-    private static void cleanExpired(LocalDateTime now) {
-        while (!bookingQueue.isEmpty()) {
-            Booking b = bookingQueue.peek();
-            if (Duration.between(b.timestamp, now).compareTo(EXPIRY_DURATION) > 0) {
-                bookingQueue.poll();
-            } else {
-                break;
-            }
-        }
+        return "Student ID " + studentId + " successfully booked a session with Mentor ID " + mentorId +
+                " [Slot ID: " + slotId + "]";
     }
 
     private static void logToFile(Booking booking) {
-        String log = "[" + booking.timestamp + "] " + booking.studentEmail + " registered for session of " + booking.mentorEmail + "\n";
+        String log = "[" + booking.timestamp + "] Student ID " + booking.studentId +
+                " booked session with Mentor ID " + booking.mentorId + "\n";
         try (FileWriter writer = new FileWriter(LOG_FILE, true)) {
             writer.write(log);
         } catch (IOException e) {
-            System.err.println(" Logging failed: " + e.getMessage());
+            System.err.println("Logging failed: " + e.getMessage());
         }
     }
 }
-
-
-
-
-//List<Session> sessionBookings = new ArrayList<>();
-//
-//public void bookSession(Student student, Mentor mentor, Slot slot) {
-//    if (sessionBookings.size() < 20) {
-//        sessionBookings.add(new Session(student, mentor, slot));
-//        System.out.println("Booking confirmed for " + student.getName());
-//    } else {
-//        System.out.println("Booking full! Cannot accept more than 20 students.");
-//    }
-//}

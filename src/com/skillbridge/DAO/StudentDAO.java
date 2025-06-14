@@ -38,11 +38,11 @@ public class StudentDAO {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Student stu = new Student(
-                    rs.getInt("student_id"),
                     rs.getString("name"),
                     rs.getString("email"),
                     rs.getString("college")
             );
+            stu.setStudent_id(rs.getInt("student_id"));
             listofStudents.add(stu);
         }
         preparedStatement.close();
