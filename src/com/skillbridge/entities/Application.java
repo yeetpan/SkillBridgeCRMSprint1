@@ -4,32 +4,32 @@ package com.skillbridge.entities;
 
 public class Application {
     //stu_id,int_id,status
-    private int application_id;
-    private int student_id;
-    private int internship_id;
+    private int applicationId;
+    private int studentId;
+    private int internshipId;
     private String status;
-    public Application(int student_id,int internship_id,String status){
-        this.student_id=student_id;
-        this.internship_id=internship_id;
+    public Application(int studentId,int internshipId,String status){
+        this.studentId=studentId;
+        this.internshipId=internshipId;
         this.status=status;
     }
     // an empty constructor for some use-cases.
     public  Application(){}
 
-    public int getStudent_id() {
-        return student_id;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setStudent_id(int student_id) {
-        this.student_id = student_id;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
-    public int getInternship_id() {
-        return internship_id;
+    public int getInternshipId() {
+        return internshipId;
     }
 
-    public void setInternship_id(int internship_id) {
-        this.internship_id = internship_id;
+    public void setInternshipId(int internshipId) {
+        this.internshipId = internshipId;
     }
 
     public String getStatus() {
@@ -40,20 +40,20 @@ public class Application {
         this.status = status;
     }
 
-    public int getApplication_id() {
-        return application_id;
+    public int getApplicationId() {
+        return applicationId;
     }
 
-    public void setApplication_id(int application_id) {
-        this.application_id = application_id;
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
     }
 
     @Override
     public String toString() {
         return "Application{" +
-                "application_id=" + application_id +
-                ", student_id=" + student_id +
-                ", internship_id=" + internship_id +
+                "application_id=" + applicationId +
+                ", student_id=" + studentId +
+                ", internship_id=" + internshipId +
                 ", status='" + status + '\'' +
                 '}';
     }
