@@ -4,49 +4,34 @@ import com.skillbridge.DAO.SessionDAO;
 import com.skillbridge.DAO.SessionSlotDAO;
 import com.skillbridge.entities.Session;
 import com.skillbridge.entities.SessionSlot;
+import com.skillbridge.util.DB;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
-import java.util.Queue;
 
 public class SessionBookingService {
     private static final int MAX_QUEUE_SIZE = 20;
     private static final String LOG_FILE = "session_log.txt";
 
-    private static class Booking {
-        int studentId;
-        int mentorId;
-        LocalDateTime timestamp;
-
-        Booking(int studentId, int mentorId, LocalDateTime timestamp) {
-            this.studentId = studentId;
-            this.mentorId = mentorId;
-            this.timestamp = timestamp;
-        }
-    }
-
-    private static final Queue<Booking> bookingQueue = new LinkedList<>();
-
-    public static synchronized String bookSession(int studentId, int mentorId,int slotId) {
-        if (bookingQueue.size() >= MAX_QUEUE_SIZE) {
-            return "Booking queue is full. Please try again later.";
+    public static synchronized String bookSession(int studentId, int mentorId, int slotId) {
+        // Step 1: Simulate queue using DB count
+        int currentBookingCount = getTotalBookingCount();
+        if (currentBookingCount >= MAX_QUEUE_SIZE) {
+            return "Booking queue is full .";
         }
 
-        // Step 1: Find an available session slot for the mentor
+        // Step 2: Check slot validity
         List<SessionSlot> availableSlots = SessionSlotDAO.getAvailableByMentor(mentorId);
-        if (availableSlots.isEmpty()) {
-            return "No available slots found for the selected mentor.";
+        boolean isSlotAvailable = availableSlots.stream().anyMatch(slot -> slot.getSlotId() == slotId);
+        if (!isSlotAvailable) {
+            return "Slot ID " + slotId + " is not available for Mentor ID " + mentorId + ".";
         }
 
-
-
-        // Step 2: Update slot status to 'Booked'
-        SessionSlotDAO.updateStatus(slotId, "Booked");
-
-        // Step 3: Create session and persist it
+        // Step 3: Create session
         Session session = new Session();
         session.setSlot_id(slotId);
         session.setStudent_id(studentId);
@@ -56,25 +41,36 @@ public class SessionBookingService {
         try {
             SessionDAO.createSession(session);
         } catch (Exception e) {
-            return "Error while booking session: " + e.getMessage();
+            return "❌ Error while booking session: " + e.getMessage();
         }
 
-        // Step 4: Queue and log the booking
-        Booking booking = new Booking(studentId, mentorId, LocalDateTime.now());
-        bookingQueue.offer(booking);
-        logToFile(booking);
-
-        return "Student ID " + studentId + " successfully booked a session with Mentor ID " + mentorId +
-                " [Slot ID: " + slotId + "]";
+        // Step 4: Log
+        logToFile("Student " + studentId + " booked slot " + slotId + " with Mentor " + mentorId);
+        return "✅ Session booked for Student ID " + studentId + " with Mentor ID " + mentorId;
     }
 
-    private static void logToFile(Booking booking) {
-        String log = "[" + booking.timestamp + "] Student ID " + booking.studentId +
-                " booked session with Mentor ID " + booking.mentorId + "\n";
+    private static int getTotalBookingCount() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM Session";
+
+        try (Connection con = DB.connect();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error counting bookings: " + e.getMessage());
+        }
+
+        return count;
+    }
+
+    private static void logToFile(String log) {
         try (FileWriter writer = new FileWriter(LOG_FILE, true)) {
-            writer.write(log);
+            writer.write(log + "\n");
         } catch (IOException e) {
-            System.err.println("Logging failed: " + e.getMessage());
+            System.err.println("❌ Logging failed: " + e.getMessage());
         }
     }
 }

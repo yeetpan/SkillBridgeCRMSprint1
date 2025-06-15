@@ -105,4 +105,34 @@ public class FeedbackDAO {
             System.out.println(e.getMessage());
         }
     }
+    public static ArrayList<Feedback> getFeedbackByMentor(int mentorId) throws SQLException {
+        ArrayList<Feedback> feedbackList = new ArrayList<>();
+        Connection con = DB.connect();
+        String query = FeedBackQueries.VIEW_FEEDBACK_BY_MENTORS;
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.setInt(1, mentorId);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Feedback feedback = new Feedback();
+            feedback.setFeedbackId(rs.getInt("feedback_id"));
+            feedback.setBookingId(rs.getInt("booking_id"));
+
+            int studentIdFromDb = rs.getInt("student_id");
+            if (rs.wasNull()) {
+                feedback.setStudentId(null);
+            } else {
+                feedback.setStudentId(studentIdFromDb);
+            }
+
+            feedback.setRating(rs.getInt("rating"));
+            feedback.setComments(rs.getString("comments"));
+
+            feedbackList.add(feedback);
+        }
+
+        ps.close();
+        return feedbackList;
+    }
+
 }

@@ -72,12 +72,16 @@ public class SessionDAO {
         }
     }
 
-    public static Optional<Session> getSessionByBookingId(int bookingId) throws SQLException {
+    public static ArrayList<Session> getSessionsByBookingId(int bookingId) throws SQLException {
+        ArrayList<Session> sessions = new ArrayList<>();
+
         try (Connection con = DB.connect();
              PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM Session WHERE booking_id = ?")) {
+
             preparedStatement.setInt(1, bookingId);
+
             try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     Session session = new Session(
                             rs.getInt("slot_id"),
                             rs.getInt("student_id"),
@@ -85,10 +89,12 @@ public class SessionDAO {
                             rs.getString("booking_status")
                     );
                     session.setBooking_id(rs.getInt("booking_id"));
-                    return Optional.of(session);
+                    sessions.add(session);
                 }
             }
         }
-        return Optional.empty();
+
+        return sessions;
     }
+
 }

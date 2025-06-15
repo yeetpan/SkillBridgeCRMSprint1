@@ -5,5 +5,6 @@ public class InternshipQueries {
     public static final String GET_ALL = "SELECT * FROM Internship";
     public static final String GET_BY_ID = "SELECT * FROM Internship WHERE internship_id = ?";
     public static final String DELETE_BY_ID = "DELETE FROM Internship WHERE internship_id = ?";
+
 }
 

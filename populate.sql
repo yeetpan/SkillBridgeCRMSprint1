@@ -75,21 +75,21 @@
 
         -- Map students to interests
        INSERT INTO Student_Interests VALUES
-       (1, 1), (1, 4),     -- Aarav: AI/ML, Data Science
-       (2, 2),             -- Sanya: Web Dev
-       (3, 1), (3, 6),     -- Rohan: AI/ML, DevOps
-       (4, 4),             -- Priya: Data Science
-       (5, 7),             -- Kunal: Mobile App
-       (6, 8),             -- Neha: Blockchain
-       (7, 1),             -- Varun: AI/ML
-       (8, 13),            -- Ananya: Big Data
-       (9, 2), (9, 7),     -- Rahul: Web Dev, Mobile App
-       (10, 6),            -- Tanya: DevOps
-       (11, 1),            -- Dev: AI/ML
-       (12, 4),            -- Ishita: Data Science
-       (13, 13),           -- Yash: Big Data
-       (14, 6),            -- Sneha: DevOps
-       (15, 8);            -- Manav: Blockchain
+       (1, 1), (1, 4),
+       (2, 2),
+       (3, 1), (3, 6),
+       (4, 4),
+       (5, 7),
+       (6, 8),
+       (7, 1),
+       (8, 13),
+       (9, 2), (9, 7),
+       (10, 6),
+       (11, 1),
+       (12, 4),
+       (13, 13),
+       (14, 6),
+       (15, 8);
 
 
         -- -----------------------------------------------
@@ -100,7 +100,7 @@
             mentor_id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
-            expertise_id INT NOT NULL,  --MENTOR HAS ONLY 1 EXPERTISE.
+            expertise_id INT NOT NULL,
             FOREIGN KEY (expertise_id) REFERENCES Interests(interest_id)
         );
 
@@ -115,15 +115,17 @@
         ('Arun Prakash', 'arun@qspiders.org', 13);
         -- -----------------------------------------------
         --Internal Table
-        CREATE TABLE Matchmaking (
-            matchmaking_id INT AUTO_INCREMENT PRIMARY KEY,
-            student_id INT NOT NULL,
-            mentor_id INT NOT NULL,
-            interest_id INT NOT NULL,
-            FOREIGN KEY (student_id) REFERENCES Student(student_id),
-            FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
-            FOREIGN KEY (interest_id) REFERENCES Interests(interest_id)
-        );
+       CREATE TABLE Matchmaking (
+           matchmaking_id INT AUTO_INCREMENT PRIMARY KEY,
+           student_id INT NOT NULL,
+           mentor_id INT NOT NULL,
+           interest_id INT NOT NULL,
+           mentor_name VARCHAR(100),
+           interest_name VARCHAR(100),
+           FOREIGN KEY (student_id) REFERENCES Student(student_id),
+           FOREIGN KEY (mentor_id) REFERENCES Mentor(mentor_id),
+           FOREIGN KEY (interest_id) REFERENCES Interests(interest_id)
+       );
        -------------------------------------------------
         -- -----------------------------------------------
         -- 5. Table: Internship
@@ -168,15 +170,7 @@
         (4, 1, 'Applied'),
         (5, 2, 'Applied'),
         (6, 4, 'Applied'),
-        (7, 1, 'Applied'),
-        (8, 5, 'Applied'),
-        (9, 2, 'Applied'),
-        (10, 3, 'Applied'),
-        (11, 1, 'Applied'),
-        (12, 4, 'Applied'),
-        (13, 5, 'Applied'),
-        (14, 3, 'Applied'),
-        (15, 4, 'Applied');
+        (7, 1, 'Applied');
 
         -- -----------------------------------------------
         -- 7. Table: Session_Slot
@@ -216,17 +210,7 @@
             FOREIGN KEY (student_id) REFERENCES Student(student_id),
             FOREIGN KEY(mentor_id) REFERENCES Mentor(mentor_id)
         );
-
-        -- Sample booking
-         INSERT INTO Session (slot_id, student_id,mentor_id, booking_status) VALUES
-            (1, 1, 1, 'Scheduled'),
-            (2, 2, 2, 'Scheduled'),
-            (3, 3, 3, 'Scheduled'),
-            (4, 4, 4, 'Scheduled'),
-            (5, 5, 5, 'Scheduled'),
-            (6, 6, 6, 'Scheduled'),
-            (7, 7, 7, 'Scheduled');
-
+'""""""
         -- -----------------------------------------------
         -- 9. Table: Feedback
         -- Stores student feedback after a session
@@ -242,12 +226,3 @@
             CONSTRAINT check_rating CHECK (rating BETWEEN 1 AND 5)
         );
 
-        -- Sample feedback
-        INSERT INTO Feedback (booking_id, student_id, rating, comments) VALUES
-        (1, 1, 5, 'Excellent ML insights'),
-        (2, 2, 4, 'Good frontend tips'),
-        (3, 3, 5, 'Loved the data science discussion'),
-        (4, 4, 3, 'Could be more structured'),
-        (5, 5, 4, 'Great mobile app ideas'),
-        (6, 6, 5, 'Amazing on-chain explanation'),
-        (7, 7, 5, 'Big data topics were very clear');
