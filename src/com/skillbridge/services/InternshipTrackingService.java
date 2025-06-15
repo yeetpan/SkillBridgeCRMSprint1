@@ -4,7 +4,7 @@ package com.skillbridge.services;
 import com.skillbridge.DAO.ApplicationDAO;
 import com.skillbridge.entities.Application;
 
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 
 public class InternshipTrackingService {
@@ -12,7 +12,7 @@ public class InternshipTrackingService {
     try{
         ArrayList<Application>applications =ApplicationDAO.getByStudentId(student_id);
         for (Application application:applications){
-            System.out.println(application.toString());
+            System.out.println("Hi your status is currently,"+application.getStatus());
         }
     }catch (Exception e){
         System.err.println(e.getMessage());

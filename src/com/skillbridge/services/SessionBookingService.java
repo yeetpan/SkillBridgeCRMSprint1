@@ -2,6 +2,7 @@ package com.skillbridge.services;
 
 import com.skillbridge.DAO.SessionDAO;
 import com.skillbridge.DAO.SessionSlotDAO;
+import com.skillbridge.DAO.StudentDAO;
 import com.skillbridge.entities.Session;
 import com.skillbridge.entities.SessionSlot;
 import com.skillbridge.util.DB;
@@ -11,20 +12,21 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class SessionBookingService {
     private static final int MAX_QUEUE_SIZE = 20;
     private static final String LOG_FILE = "session_log.txt";
 
-    public static synchronized String bookSession(int studentId, int mentorId, int slotId) {
+    public static synchronized String bookSession(int studentId, int mentorId, int slotId) throws SQLException {
         // Step 1: Simulate queue using DB count
         int currentBookingCount = getTotalBookingCount();
         if (currentBookingCount >= MAX_QUEUE_SIZE) {
             return "Booking queue is full .";
         }
 
-        // Step 2: Check slot validity
+        // Step 2: Check slot validity using Java Collections
         List<SessionSlot> availableSlots = SessionSlotDAO.getAvailableByMentor(mentorId);
         boolean isSlotAvailable = availableSlots.stream().anyMatch(slot -> slot.getSlotId() == slotId);
         if (!isSlotAvailable) {
@@ -36,16 +38,16 @@ public class SessionBookingService {
         session.setSlot_id(slotId);
         session.setStudent_id(studentId);
         session.setMentor_id(mentorId);
-        session.setBooking_status("Pending");
+        session.setBooking_status("Scheduled");
 
         try {
             SessionDAO.createSession(session);
         } catch (Exception e) {
             return "❌ Error while booking session: " + e.getMessage();
         }
-
+        String studentName=StudentDAO.GetStudentName(studentId);
         // Step 4: Log
-        logToFile("Student " + studentId + " booked slot " + slotId + " with Mentor " + mentorId);
+        logToFile("Student " + studentName + " booked slot " + slotId + " with Mentor " + mentorId);
         return "✅ Session booked for Student ID " + studentId + " with Mentor ID " + mentorId;
     }
 

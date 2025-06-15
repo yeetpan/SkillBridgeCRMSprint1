@@ -97,4 +97,16 @@ public class StudentDAO {
         preparedStatement.close();
         return id;
     }
+
+    public static String GetStudentName(int studentId) throws SQLException{
+        Connection con=DB.connect();
+        String query=StudentQueries.get_name_by_id;
+        PreparedStatement preparedStatement=con.prepareStatement(query);
+        preparedStatement.setInt(1,studentId);
+        ResultSet rs=preparedStatement.executeQuery();
+        String stuname =rs.getString("name");
+        return stuname;
+    }
+
+
 }
