@@ -10,7 +10,7 @@
 
 - **Java 17+**
 - **MySQL 9.0+**
-- **MySQLWorkbench** for url or commands can be used to get username/port.
+- **MySQLWorkbench** for url and for populating DB at once.
 - **JDBC(JConnector)**
 ---
 
@@ -25,7 +25,7 @@
 
 ##  Compilation Instructions
 
-To compile the project from the command line, follow this order:
+To compile the project from the command line, follow this order:(Or Usage of IDEs such as IntelliJ , only App is required to run (assuming jConnector and DB schema is created ))
 
 ### 1. Compile DB Connection Utility
 ```
@@ -62,7 +62,7 @@ java com.skillbridge.App
 
 | Folder             | Purpose                                                              |
 |--------------------|----------------------------------------------------------------------|
-| `util/`            | Database connection helper (`DB.java`)                               |
+| `util/`            |DB connection helper and other ExceptionClasses                       |
 | `entities/`        | Classes representing each table (Student, Mentor, Internship, etc.)  |
 | `queries/`         | Centralized SQL query strings per entity                             |
 | `DAO/`             | Performs all SQL operations for each table                           |
