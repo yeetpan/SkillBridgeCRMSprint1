@@ -1,12 +1,12 @@
-![image](https://github.com/user-attachments/assets/b9407dc6-7b3a-4e31-8ab0-fb6b82113e66)
-# SkillBridge CRM Console App (Java + JDBC)
+ SkillBridge CRM Console App (Java + JDBC)
 
 **SkillBridge**, a nonprofit that connects students with mentors and internship opportunities. It uses **Java + JDBC** and built for Sprint-1 and using  a `com.skillbridge.*` package structure.
 
 ---
 
 ### 🎥 Project Demo
-
+![image](https://github.com/user-attachments/assets/b9407dc6-7b3a-4e31-8ab0-fb6b82113e66)
+#
 📺 **Watch the SkillBridge Demo on YouTube:**  
 [https://www.youtube.com/watch?v=w2smXvJxYaE](https://www.youtube.com/watch?v=w2smXvJxYaE)
 
