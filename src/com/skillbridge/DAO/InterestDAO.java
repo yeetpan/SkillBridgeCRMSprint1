@@ -1,5 +1,5 @@
 package com.skillbridge.DAO;
-
+//InterestDAO
 import com.skillbridge.queries.InterestsQueries;
 import com.skillbridge.util.DB;
 import java.sql.Connection;
