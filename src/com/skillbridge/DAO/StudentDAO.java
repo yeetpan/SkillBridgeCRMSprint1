@@ -98,15 +98,22 @@ public class StudentDAO {
         return id;
     }
 
-    public static String GetStudentName(int studentId) throws SQLException{
-        Connection con=DB.connect();
-        String query=StudentQueries.get_name_by_id;
-        PreparedStatement preparedStatement=con.prepareStatement(query);
-        preparedStatement.setInt(1,studentId);
-        ResultSet rs=preparedStatement.executeQuery();
-        String stuname =rs.getString("name");
-        return stuname;
+    public static String GetStudentName(int studentId) throws SQLException {
+        try (Connection con = DB.connect();
+             PreparedStatement preparedStatement = con.prepareStatement(StudentQueries.get_name_by_id)) {
+            preparedStatement.setInt(1, studentId);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    String stuname = rs.getString("name");
+                    return stuname;
+                } else {
+                    throw new SQLException("No student found with ID: " + studentId);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching student name for studentId " + studentId + ": " + e.getMessage());
+            throw e;
+        }
     }
-
 
 }

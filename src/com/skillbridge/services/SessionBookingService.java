@@ -1,5 +1,6 @@
 package com.skillbridge.services;
 
+import com.skillbridge.DAO.MentorDAO;
 import com.skillbridge.DAO.SessionDAO;
 import com.skillbridge.DAO.SessionSlotDAO;
 import com.skillbridge.DAO.StudentDAO;
@@ -33,6 +34,10 @@ public class SessionBookingService {
             return "Slot ID " + slotId + " is not available for Mentor ID " + mentorId + ".";
         }
 
+        if (SessionDAO.isAlreadyBooked(studentId, slotId)) {
+            return " You have already booked this session slot.";
+        }
+
         // Step 3: Create session
         Session session = new Session();
         session.setSlot_id(slotId);
@@ -43,17 +48,18 @@ public class SessionBookingService {
         try {
             SessionDAO.createSession(session);
         } catch (Exception e) {
-            return "❌ Error while booking session: " + e.getMessage();
+            return " Error while booking session: " + e.getMessage();
         }
         String studentName=StudentDAO.GetStudentName(studentId);
+        String mentorName= MentorDAO.GetMentorName(mentorId);
         // Step 4: Log
-        logToFile("Student " + studentName + " booked slot " + slotId + " with Mentor " + mentorId);
-        return "✅ Session booked for Student ID " + studentId + " with Mentor ID " + mentorId;
+        logToFile("Student " + studentName + " booked slot " + slotId + " with Mentor " + mentorName);
+        return " Session booked for Student ID " + studentId + " with Mentor ID " + mentorId;
     }
 
     private static int getTotalBookingCount() {
         int count = 0;
-        String query = "SELECT COUNT(*) FROM Session";
+        String query = "SELECT COUNT(*) FROM Session ";
 
         try (Connection con = DB.connect();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -62,7 +68,7 @@ public class SessionBookingService {
                 count = rs.getInt(1);
             }
         } catch (Exception e) {
-            System.err.println("❌ Error counting bookings: " + e.getMessage());
+            System.err.println(" Error counting bookings: " + e.getMessage());
         }
 
         return count;
@@ -72,7 +78,7 @@ public class SessionBookingService {
         try (FileWriter writer = new FileWriter(LOG_FILE, true)) {
             writer.write(log + "\n");
         } catch (IOException e) {
-            System.err.println("❌ Logging failed: " + e.getMessage());
+            System.err.println("Logging failed: " + e.getMessage());
         }
     }
 }

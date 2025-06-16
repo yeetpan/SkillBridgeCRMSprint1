@@ -18,7 +18,7 @@
 
 ### Prerequisites
 
-- MySQL 9.0+
+- MySQL 9.0+ or Oracle XE
 - Tables created and populated (see `populate.sql` )
 
 ---

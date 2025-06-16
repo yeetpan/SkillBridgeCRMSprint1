@@ -13,6 +13,7 @@ public class SessionDAO {
     public static void createSession(Session session) throws SQLException {
         try (Connection con = DB.connect();
              PreparedStatement preparedStatement = con.prepareStatement(SessionQueries.INSERT, Statement.RETURN_GENERATED_KEYS)) {
+
             preparedStatement.setInt(1, session.getSlot_id());
             preparedStatement.setInt(2, session.getStudent_id());
             preparedStatement.setInt(3, session.getMentor_id());
@@ -24,9 +25,11 @@ public class SessionDAO {
             }
 
             try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
-                if (rs.next()) {
+                if(rs.next()){
                     session.setBooking_id(rs.getInt(1));
                 }
+                } catch (SQLException e) {
+                System.err.println(" Could not fetch booking_id: " + e.getMessage());
             }
         }
     }
@@ -96,5 +99,22 @@ public class SessionDAO {
 
         return sessions;
     }
+
+    public static boolean isAlreadyBooked(int studentId, int slotId) {
+        String query = "SELECT COUNT(*) FROM Session WHERE student_id = ? AND slot_id = ?";
+        try (Connection con = DB.connect();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, slotId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error checking existing booking: " + e.getMessage());
+        }
+        return false;
+    }
+
 
 }

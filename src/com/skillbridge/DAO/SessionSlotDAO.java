@@ -43,6 +43,7 @@ public class SessionSlotDAO {
                 sessionSlot.setMentorId(rs.getInt("mentor_id"));
                 sessionSlot.setDate(rs.getDate("date"));
                 sessionSlot.setDuration(rs.getInt("duration"));
+                sessionSlot.setTime(rs.getTime("time"));
                 sessionSlot.setStatus(rs.getString("status"));
                 slots.add(sessionSlot);
             }

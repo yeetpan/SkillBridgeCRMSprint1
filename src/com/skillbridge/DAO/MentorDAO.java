@@ -2,6 +2,7 @@ package com.skillbridge.DAO;
 
 import com.skillbridge.entities.Mentor;
 import com.skillbridge.queries.MentorQueries;
+import com.skillbridge.queries.StudentQueries;
 import com.skillbridge.util.DB;
 
 
@@ -124,5 +125,22 @@ public class MentorDAO {
         }
         preparedStatement.close();
         return matchedMentors;
+    }
+    public static String GetMentorName(int mentorId) throws SQLException {
+        try (Connection con = DB.connect();
+             PreparedStatement preparedStatement = con.prepareStatement(MentorQueries.GET_NAME)) {
+            preparedStatement.setInt(1, mentorId);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    String mentorname = rs.getString("name");
+                    return mentorname;
+                } else {
+                    throw new SQLException("No mentor found with ID: " + mentorId);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching mentor name for mentorId " + mentorId + ": " + e.getMessage());
+            throw e;
+        }
     }
 }

@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class App {
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args)  {
         while (true) {
             try {
                 System.out.println("\nWelcome to SkillBridge");
@@ -28,6 +28,7 @@ public class App {
                 switch (choice) {
                     case 1 -> handleStudent();
                     case 2 -> handleMentor();
+                    //usage of forEach() loops for saving spaces rather usage of arrayLists as it is only for display.
                     case 3 -> InternshipDAO.readInternship().forEach(System.out::println);
                     case 4 -> createStudent();
                     case 5 -> createMentor();
@@ -42,6 +43,7 @@ public class App {
                 System.out.println(e.getMessage());
             } catch (SQLException e) {
                 System.out.println("Database Error: " + e.getMessage());
+                ///e.printStackTrace() -> for debugging code when something goes wrong.
             }
         }
     }
@@ -78,7 +80,7 @@ public class App {
                         ApplicationDAO.createApplication(new Application(studentId, internshipId, "Applied"));
                     }
                     case 3 -> {
-                        MatchMakingDAO.MatchMaker(studentId);
+                        MatchMakingDAO.showMatchedMentors(studentId);
                         System.out.print("Enter Mentor ID to view available slots: ");
                         int mentorId = sc.nextInt(); sc.nextLine();
 
@@ -198,7 +200,7 @@ public class App {
         }
 
         System.out.println("Match-making in Progress...");
-        MatchMakingDAO.MatchMaker(student.getStudent_id());
+        MatchMakingDAO.createMatchMakingForStudent(student.getStudent_id());
 
         System.out.print("Enter Mentor ID to view available slots: ");
         int mentorId = sc.nextInt(); sc.nextLine();

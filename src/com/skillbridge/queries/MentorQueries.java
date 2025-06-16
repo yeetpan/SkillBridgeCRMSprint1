@@ -8,4 +8,5 @@ public class MentorQueries {
     public static final String select_id_by_email = "SELECT * FROM Mentor WHERE email = ?";
     public static final String DELETE_BY_ID = "DELETE FROM Mentor WHERE mentor_id = ?";
     public static final String UPDATE = "UPDATE Mentor SET name = ?, email = ?, expertise_id = ? WHERE mentor_id = ?";
+    public static final String GET_NAME="SELECT name FROM Mentor WHERE mentor_id = ?";
 }
