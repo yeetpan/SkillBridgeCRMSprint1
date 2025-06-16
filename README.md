@@ -4,8 +4,13 @@
 
 ---
 
-📺 **Watch the SkillBridge Demo on YouTube:**  
-[https://www.youtube.com/watch?v=w2smXvJxYaE](https://www.youtube.com/watch?v=w2smXvJxYaE)
+<h3>🎥 Project Demo</h3>
+
+<iframe width="560" height="315" 
+src="https://www.youtube.com/embed/w2smXvJxYaE" 
+title="SkillBridge CRM Java JDBC Demo" 
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+allowfullscreen></iframe>
 
 
 
