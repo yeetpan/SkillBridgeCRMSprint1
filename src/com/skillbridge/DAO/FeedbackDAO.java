@@ -111,7 +111,7 @@ public class FeedbackDAO {
         Connection con = DB.connect();
         String query = FeedBackQueries.VIEW_FEEDBACK_BY_MENTORS;
         PreparedStatement ps = con.prepareStatement(query);
-        ps.setInt(1, mentorId);
+        ps.setInt( 1,mentorId);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {

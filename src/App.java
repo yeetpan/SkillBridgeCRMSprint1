@@ -96,9 +96,7 @@ public class App {
                     }
                     case 4 -> SessionDAO.getSessionsByStudent(studentId).forEach(System.out::println);
                     case 5 -> {
-                        var sessions = SessionDAO.getSessionsByBookingId(studentId);
-                        sessions.forEach(System.out::println);
-
+                        SessionDAO.getSessionsByStudent(studentId).forEach(System.out::println);
                         System.out.print("Enter Booking ID: ");
                         int bookingId = sc.nextInt();
                         System.out.print("Enter Rating (1-5): ");
