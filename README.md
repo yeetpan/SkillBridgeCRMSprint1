@@ -5,6 +5,12 @@
 
 ---
 
+### 🎥 Project Demo
+
+📺 **Watch the SkillBridge Demo on YouTube:**  
+[https://www.youtube.com/watch?v=YOUR_VIDEO_ID](https://www.youtube.com/watch?v=w2smXvJxYaE)
+
+
 
 ## Tech Stack
 
