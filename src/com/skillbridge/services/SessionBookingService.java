@@ -22,7 +22,7 @@ public class SessionBookingService {
 
     public static synchronized String bookSession(int studentId, int mentorId, int slotId) throws SQLException {
         // Step 1: Simulate queue using DB count
-        int currentBookingCount = getTotalBookingCount(studentId);
+        int currentBookingCount = getTotalBookingCount(slotId);
         if (currentBookingCount >= MAX_QUEUE_SIZE) {
             return "Booking queue is full .";
         }
@@ -57,13 +57,13 @@ public class SessionBookingService {
         return " Session booked for Student ID " + studentId + " with Mentor ID " + mentorId;
     }
 
-    private static int getTotalBookingCount(int studentId) {
+    private static int getTotalBookingCount(int slotId) {
         int count = 0;
-        String query = "SELECT COUNT(*) FROM Session WHERE student_id = ? ";
+        String query = "SELECT COUNT(*) FROM Session WHERE slot_id = ? ";
 
         try (Connection con = DB.connect();
              PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1,studentId);
+            ps.setInt(1,slotId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
