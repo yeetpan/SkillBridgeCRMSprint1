@@ -1,4 +1,4 @@
-# SkillBridge CRM Console App (Java + JDBC with Oracle XE)
+# SkillBridge CRM Console App (Java + JDBC with MySQL 9.0)
 
 **SkillBridge** is a Java-based console application designed to connect students with mentors, enable internship applications, and manage mentoring sessions effectively. It supports seamless registration, application, booking, and tracking processes via an interactive, menu-driven interface. This version uses **Java + JDBC** and Oracle XE and is organized using a structured package layout under `com.skillbridge.*`.
 
