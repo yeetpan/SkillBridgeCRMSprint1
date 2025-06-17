@@ -2,7 +2,7 @@ package com.skillbridge.entities;
 
 public class Feedback {
     private int feedbackId;
-    private int bookingId;
+    private int bookingId;      // This references Session_Booking table's booking_id
     private Integer studentId;  // Nullable
     private int rating;
     private String comments;
@@ -10,7 +10,7 @@ public class Feedback {
     // Constructors
     public Feedback() {}
 
-    public Feedback( int bookingId, Integer studentId, int rating, String comments) {
+    public Feedback(int bookingId, Integer studentId, int rating, String comments) {
         this.bookingId = bookingId;
         this.studentId = studentId;
         this.rating = rating;

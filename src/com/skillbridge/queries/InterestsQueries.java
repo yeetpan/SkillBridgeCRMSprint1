@@ -1,8 +1,9 @@
 package com.skillbridge.queries;
 
 public class InterestsQueries {
-    public static final String SHOW_INTERESTS="SELECT * FROM Interests ORDER BY interest_id;";
+    public static final String SHOW_INTERESTS="SELECT * FROM Interests ORDER BY interest_id";
 }
+
 
 
 //1.Register Student->INSERT

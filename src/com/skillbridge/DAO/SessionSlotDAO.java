@@ -1,4 +1,4 @@
-package com.skillbridge.DAO ;
+package com.skillbridge.DAO;
 
 import com.skillbridge.util.DB;
 import com.skillbridge.entities.SessionSlot;
@@ -14,8 +14,8 @@ public class SessionSlotDAO {
              PreparedStatement ps = con.prepareStatement(SessionSlotQueries.INSERT)) {
 
             ps.setInt(1, slot.getMentorId());
-            ps.setDate(2, slot.getDate());
-            ps.setTime(3, slot.getTime());
+            ps.setDate(2, slot.getSlotDate());        // Updated method call
+            ps.setTimestamp(3, slot.getSlotTime());   // Updated method call and data type
             ps.setInt(4, slot.getDuration());
             ps.setString(5, slot.getStatus());
 
@@ -32,16 +32,17 @@ public class SessionSlotDAO {
         ArrayList<SessionSlot> slots = new ArrayList<>();
 
         try (Connection con = DB.connect();
-             PreparedStatement ps = con.prepareStatement(SessionSlotQueries.GET_AVAILABLE_BY_MENTOR,Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = con.prepareStatement(SessionSlotQueries.GET_AVAILABLE_BY_MENTOR)) {  // Removed unnecessary RETURN_GENERATED_KEYS
 
             ps.setInt(1, mentorId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                SessionSlot sessionSlot=new SessionSlot();
+                SessionSlot sessionSlot = new SessionSlot();
                 sessionSlot.setSlotId(rs.getInt("slot_id"));
                 sessionSlot.setMentorId(rs.getInt("mentor_id"));
-                sessionSlot.setDate(rs.getDate("date"));
+                sessionSlot.setSlotDate(rs.getDate("slot_date"));           // Updated column name and method call
+                sessionSlot.setSlotTime(rs.getTimestamp("slot_time"));      // Updated column name and method call
                 sessionSlot.setDuration(rs.getInt("duration"));
                 sessionSlot.setStatus(rs.getString("status"));
                 slots.add(sessionSlot);
@@ -53,7 +54,6 @@ public class SessionSlotDAO {
 
         return slots;
     }
-
 
     public static void updateStatus(int slotId, String newStatus) {
         try (Connection con = DB.connect();
@@ -73,3 +73,4 @@ public class SessionSlotDAO {
         }
     }
 }
+

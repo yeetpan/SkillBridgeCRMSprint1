@@ -4,7 +4,6 @@ import com.skillbridge.entities.Mentor;
 import com.skillbridge.queries.MentorQueries;
 import com.skillbridge.util.DB;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -42,8 +41,8 @@ public class MentorDAO {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Mentor mentor = new Mentor(
-                    rs.getString("name"),
-                    rs.getString("email"),
+                    rs.getString("mentor_name"),      // Updated column name
+                    rs.getString("mentor_email"),     // Updated column name
                     rs.getInt("expertise_id")
             );
             mentor.setMentor_id(rs.getInt("mentor_id"));
@@ -115,8 +114,8 @@ public class MentorDAO {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Mentor mentor = new Mentor(
-                    rs.getString("name"),
-                    rs.getString("email"),
+                    rs.getString("mentor_name"),      // Updated column name
+                    rs.getString("mentor_email"),     // Updated column name
                     rs.getInt("expertise_id")
             );
             mentor.setMentor_id(rs.getInt("mentor_id"));

@@ -21,6 +21,7 @@ public class StudentInterestDAO {
                 System.out.println("Student interest mapping inserted successfully!!");
             }
             preparedStatement.close();
+            con.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -37,6 +38,7 @@ public class StudentInterestDAO {
             interestIds.add(rs.getInt("interest_id"));
         }
         preparedStatement.close();
+        con.close();
         return interestIds;
     }
 
@@ -51,12 +53,12 @@ public class StudentInterestDAO {
                 System.out.println("Deleted student interests for student ID " + studentId + " successfully!!");
             }
             preparedStatement.close();
+            con.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    // Helper method to add multiple interests for a student
     public static void addMultipleInterests(int studentId, ArrayList<Integer> interestIds) {
         try {
             Connection con = DB.connect();
@@ -72,6 +74,7 @@ public class StudentInterestDAO {
             int[] results = preparedStatement.executeBatch();
             System.out.println("Added " + results.length + " interests for student ID " + studentId);
             preparedStatement.close();
+            con.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

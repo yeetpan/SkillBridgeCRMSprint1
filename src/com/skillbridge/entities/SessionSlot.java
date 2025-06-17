@@ -1,26 +1,27 @@
 package com.skillbridge.entities;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;  // Changed from Time to Timestamp
 
 public class SessionSlot {
     private int slotId;
     private int mentorId;
-    private Date date;
-    private Time time;
+    private Date slotDate;        // Changed from 'date' to 'slotDate'
+    private Timestamp slotTime;   // Changed from 'time' to 'slotTime' and Time to Timestamp
     private int duration;
     private String status;
 
     public SessionSlot(){}
 
-    public SessionSlot(int slotId,int mentorId,Date date,Time time,int duration,String status){
-            this.slotId=slotId;
-            this.mentorId=mentorId;
-            this.date=date;
-            this.time=time;
-            this.duration=duration;
-            this.status=status;
+    public SessionSlot(int slotId, int mentorId, Date slotDate, Timestamp slotTime, int duration, String status){
+        this.slotId = slotId;
+        this.mentorId = mentorId;
+        this.slotDate = slotDate;      // Updated parameter name
+        this.slotTime = slotTime;      // Updated parameter name
+        this.duration = duration;
+        this.status = status;
     }
+
     // Getters
     public int getSlotId() {
         return slotId;
@@ -30,12 +31,12 @@ public class SessionSlot {
         return mentorId;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getSlotDate() {        // Updated getter name
+        return slotDate;
     }
 
-    public Time getTime() {
-        return time;
+    public Timestamp getSlotTime() {   // Updated getter name and return type
+        return slotTime;
     }
 
     public int getDuration() {
@@ -55,12 +56,12 @@ public class SessionSlot {
         this.mentorId = mentorId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setSlotDate(Date slotDate) {    // Updated setter name and parameter
+        this.slotDate = slotDate;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setSlotTime(Timestamp slotTime) {  // Updated setter name, parameter, and type
+        this.slotTime = slotTime;
     }
 
     public void setDuration(int duration) {
@@ -77,8 +78,8 @@ public class SessionSlot {
         return "SessionSlot{" +
                 "slotId=" + slotId +
                 ", mentorId=" + mentorId +
-                ", date=" + date +
-                ", time=" + time +
+                ", slotDate=" + slotDate +      // Updated field name
+                ", slotTime=" + slotTime +      // Updated field name
                 ", duration=" + duration +
                 ", status='" + status + '\'' +
                 '}';

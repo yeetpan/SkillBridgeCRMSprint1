@@ -24,7 +24,9 @@ public class StudentDAO {
             if (rs.next()) {
                 student.setStudent_id(rs.getInt(1));
             }
+            rs.close();
             preparedStatement.close();
+            con.close();
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -38,14 +40,16 @@ public class StudentDAO {
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Student stu = new Student(
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("college")
+                    rs.getString("student_name"),
+                    rs.getString("student_email"),
+                    rs.getString("student_college")
             );
             stu.setStudent_id(rs.getInt("student_id"));
             listofStudents.add(stu);
         }
+        rs.close();
         preparedStatement.close();
+        con.close();
         return listofStudents;
     }
 
@@ -63,6 +67,7 @@ public class StudentDAO {
                 System.out.println("Updated Successfully!!");
             }
             preparedStatement.close();
+            con.close();
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -73,12 +78,13 @@ public class StudentDAO {
             Connection con = DB.connect();
             String query = StudentQueries.delete_by_id;
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, student_id); // You missed this
+            preparedStatement.setInt(1, student_id);
             int rowsAffected = preparedStatement.executeUpdate();
             if(rowsAffected > 0){
                 System.out.println("Deleted Student with id " + student_id + " successfully!!");
             }
             preparedStatement.close();
+            con.close();
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -88,13 +94,15 @@ public class StudentDAO {
         Connection con = DB.connect();
         String query = StudentQueries.get_id;
         PreparedStatement preparedStatement = con.prepareStatement(query);
-        preparedStatement.setString(1, email); // Required
+        preparedStatement.setString(1, email);
         ResultSet rs = preparedStatement.executeQuery();
         int id = -1;
         if (rs.next()) {
             id = rs.getInt("student_id");
         }
+        rs.close();
         preparedStatement.close();
+        con.close();
         return id;
     }
 
@@ -104,9 +112,15 @@ public class StudentDAO {
         PreparedStatement preparedStatement=con.prepareStatement(query);
         preparedStatement.setInt(1,studentId);
         ResultSet rs=preparedStatement.executeQuery();
-        String stuname =rs.getString("name");
+        String stuname = null;
+        if (rs.next()) {
+            stuname = rs.getString("student_name");
+        }
+        rs.close();
+        preparedStatement.close();
+        con.close();
         return stuname;
     }
-
-
 }
+
+

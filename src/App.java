@@ -7,7 +7,6 @@ import com.skillbridge.util.*;
 import java.sql.*;
 import java.util.Scanner;
 
-
 public class App {
     private static final Scanner sc = new Scanner(System.in);
 
@@ -92,10 +91,10 @@ public class App {
                         String response = SessionBookingService.bookSession(studentId, mentorId, slotId);
                         System.out.println(response);
                     }
-                    case 4 -> SessionDAO.getSessionsByStudent(studentId).forEach(System.out::println);
+                    case 4 -> SessionBookingDAO.getSessionBookingsByStudent(studentId).forEach(System.out::println);
                     case 5 -> {
-                        var sessions = SessionDAO.getSessionsByBookingId(studentId);
-                        sessions.forEach(System.out::println);
+                        var sessionBookings = SessionBookingDAO.getSessionBookingsByBookingId(studentId);
+                        sessionBookings.forEach(System.out::println);
 
                         System.out.print("Enter Booking ID: ");
                         int bookingId = sc.nextInt();
@@ -142,7 +141,8 @@ public class App {
                         System.out.print("Enter date (yyyy-mm-dd): ");
                         Date date = Date.valueOf(sc.nextLine());
                         System.out.print("Enter time (HH:mm:ss): ");
-                        Time time = Time.valueOf(sc.nextLine());
+                        String timeStr = sc.nextLine();
+                        Timestamp time = Timestamp.valueOf(date + " " + timeStr);
                         System.out.print("Duration (minutes): ");
                         int duration = sc.nextInt(); sc.nextLine();
 
@@ -183,7 +183,13 @@ public class App {
 
         InterestDAO.showInterests();
         System.out.println("Enter Interest IDs (comma-separated like 1,3,5): ");
-        String[] interestInputs = sc.nextLine().split(",");
+        String interestInput = sc.nextLine().trim();
+        while (interestInput.isEmpty()) {
+            System.out.println("You must select at least one interest. Please enter interest IDs: ");
+            interestInput = sc.nextLine().trim();
+        }
+        String[] interestInputs = interestInput.split(",");
+
 
         Student student = new Student(name, email, college);
         StudentDAO.createStudent(student);
@@ -251,7 +257,8 @@ public class App {
             System.out.print("Enter date (yyyy-mm-dd): ");
             Date date = Date.valueOf(sc.nextLine());
             System.out.print("Enter time (HH:mm:ss): ");
-            Time time = Time.valueOf(sc.nextLine());
+            String timeStr = sc.nextLine();
+            Timestamp time = Timestamp.valueOf(date + " " + timeStr);
             System.out.print("Enter duration in minutes: ");
             int duration = sc.nextInt(); sc.nextLine();
             SessionSlot slot = new SessionSlot(0, mentor.getMentor_id(), date, time, duration, "Available");

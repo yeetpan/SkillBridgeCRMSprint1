@@ -1,9 +1,9 @@
 package com.skillbridge.services;
 
-import com.skillbridge.DAO.SessionDAO;
+import com.skillbridge.DAO.SessionBookingDAO;
 import com.skillbridge.DAO.SessionSlotDAO;
 import com.skillbridge.DAO.StudentDAO;
-import com.skillbridge.entities.Session;
+import com.skillbridge.entities.SessionBooking;
 import com.skillbridge.entities.SessionSlot;
 import com.skillbridge.util.DB;
 
@@ -34,18 +34,18 @@ public class SessionBookingService {
         }
 
         // Step 3: Create session
-        Session session = new Session();
-        session.setSlot_id(slotId);
-        session.setStudent_id(studentId);
-        session.setMentor_id(mentorId);
-        session.setBooking_status("Scheduled");
+        SessionBooking sessionBooking = new SessionBooking();
+        sessionBooking.setSlot_id(slotId);
+        sessionBooking.setStudent_id(studentId);
+        sessionBooking.setMentor_id(mentorId);
+        sessionBooking.setBooking_status("Scheduled");
 
         try {
-            SessionDAO.createSession(session);
+            SessionBookingDAO.createSessionBooking(sessionBooking);
         } catch (Exception e) {
             return "❌ Error while booking session: " + e.getMessage();
         }
-        String studentName=StudentDAO.GetStudentName(studentId);
+        String studentName = StudentDAO.GetStudentName(studentId);
         // Step 4: Log
         logToFile("Student " + studentName + " booked slot " + slotId + " with Mentor " + mentorId);
         return "✅ Session booked for Student ID " + studentId + " with Mentor ID " + mentorId;
@@ -53,7 +53,7 @@ public class SessionBookingService {
 
     private static int getTotalBookingCount() {
         int count = 0;
-        String query = "SELECT COUNT(*) FROM Session";
+        String query = "SELECT COUNT(*) FROM Session_Booking";
 
         try (Connection con = DB.connect();
              PreparedStatement ps = con.prepareStatement(query)) {
