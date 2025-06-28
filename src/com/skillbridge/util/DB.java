@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DB {
-    private static final String url="jdbc:mysql://localhost:3306/skillbridge";
+    private static final String url="jdbc:mysql://localhost:3306/skilldb";
     private static final String username="root";
     private static final String password="password";
     static Connection connection=null;
